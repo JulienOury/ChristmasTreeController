@@ -70,13 +70,13 @@ module wb_port_tb;
 	end
 
 	initial begin
-    ir_drv.init(0, 562500);
+    ir_drv.init(0, 56250); //Protocol tick period divided by 10 for simulation speed-up
     cmd_addr = $random%256;
     cmd_data = $random%256;
     
 	  wait(checkbits == 16'hAB60);
 		$display("Monitor: MPRJ-Logic WB Started");
-    ir_drv.send_nec(cmd_addr, cmd_data);
+        ir_drv.send_nec(cmd_addr, cmd_data);
 		wait ((checkbits == 16'hAB61) && (addrbits == cmd_addr) && (databits == cmd_data));
 		`ifdef GL
 	    	$display("Monitor: Mega-Project WB (GL) Passed");

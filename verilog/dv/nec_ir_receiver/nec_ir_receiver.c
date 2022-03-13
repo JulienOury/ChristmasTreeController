@@ -78,9 +78,9 @@ void main()
     
     /* Config IR receiver */
     // 70 312,5ns / 25ns
-    reg_mprj_ir_multiplier = 0x0000000A;
+    reg_mprj_ir_multiplier = 0x00000064; //Protocol tick period divided by 10 for simulation speed-up
     reg_mprj_ir_divider    = 0x00006DDD;
-    reg_mprj_ir_cmd       = 0x94000000;
+    reg_mprj_ir_cmd        = 0x94000000;
 
      /* Apply configuration */
     reg_mprj_xfer = 1;
