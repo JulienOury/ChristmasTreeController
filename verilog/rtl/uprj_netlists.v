@@ -25,4 +25,6 @@
 `else
     `include "user_project_wrapper.v"
     `include "user_proj_example.v"
+    `include "simple_fifo.v"
+    `include "nec_ir_receiver.v"
 `endif

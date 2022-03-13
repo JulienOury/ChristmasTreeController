@@ -193,6 +193,24 @@ check-pdk:
 		echo "PDK Root: "$(PDK_ROOT)" doesn't exists, please export the correct path before running make. "; \
 		exit 1; \
 	fi
+	
+zip:
+	gzip -f def/*
+	gzip -f lef/*
+	gzip -f gds/*
+	gzip -f mag/*
+	gzip -f maglef/*
+	gzip -f spef/*
+	gzip -f spi/lvs/*
+
+unzip:
+	gzip -d def/*
+	gzip -d lef/*
+	gzip -d gds/*
+	gzip -d mag/*
+	gzip -d maglef/*
+	gzip -d spef/*
+	gzip -d spi/lvs/*
 
 .PHONY: help
 help:
