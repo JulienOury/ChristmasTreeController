@@ -38,7 +38,7 @@ module wb_port_tb;
 	assign addrbits = mprj_io[15:8];
 	assign databits = mprj_io[7:0];
 
-	assign mprj_io[3] = 1'b1;
+	//assign mprj_io[3] = 1'b1;
 
 	// External clock is used by default.  Make this artificially fast for the
 	// simulation.  Normally this would be a slow clock and the digital PLL
