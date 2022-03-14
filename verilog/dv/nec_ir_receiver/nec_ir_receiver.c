@@ -75,6 +75,22 @@ void main()
     reg_mprj_io_18 = GPIO_MODE_MGMT_STD_OUTPUT;
     reg_mprj_io_17 = GPIO_MODE_MGMT_STD_OUTPUT;
     reg_mprj_io_16 = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_15 = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_14 = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_13 = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_12 = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_11 = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_10 = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_9  = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_8  = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_7  = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_6  = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_5  = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_4  = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_3  = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_2  = GPIO_MODE_MGMT_STD_OUTPUT;
+    reg_mprj_io_1  = GPIO_MODE_MGMT_STD_OUTPUT;
+    //reg_mprj_io_0  = GPIO_MODE_MGMT_STD_OUTPUT;
     
     /* Config IR receiver */
     // 70 312,5ns / 25ns
@@ -95,6 +111,6 @@ void main()
   do {
      ir_data = reg_mprj_ir_data;
   } while ((ir_data & 0x80000000) != 0x80000000 );
-  reg_mprj_datal = 0xAB610000 | (ir_data & 0x0000FFFF) ;
+  reg_mprj_datal = 0xAB610000 | ((ir_data << 1) & 0x0000FFFE) ;
 
 }
