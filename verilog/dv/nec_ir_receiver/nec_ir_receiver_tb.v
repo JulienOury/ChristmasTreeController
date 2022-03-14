@@ -80,15 +80,15 @@ module wb_port_tb;
 		wait (checkbits == 16'hAB61);
                 if ((addrbits == cmd_addr) && (databits == cmd_data)) begin
                   `ifdef GL
-	    	     $display("Monitor: Mega-Project WB (GL) Failed [0x%h -> 0x%h]", addrbits, databits);
-		  `else
-		     $display("Monitor: Mega-Project WB (RTL) Failed [0x%h -> 0x%h]", addrbits, databits);
-		  `endif
-                end else begin
-		  `ifdef GL
 	    	     $display("Monitor: Mega-Project WB (GL) Passed");
 		  `else
 		     $display("Monitor: Mega-Project WB (RTL) Passed");
+		  `endif
+                end else begin
+		  `ifdef GL
+	    	     $display("Monitor: Mega-Project WB (GL) Failed [0x%h -> 0x%h]", addrbits, databits);
+		  `else
+		     $display("Monitor: Mega-Project WB (RTL) Failed [0x%h -> 0x%h]", addrbits, databits);
 		  `endif
                 end
 	    $finish;
