@@ -41,8 +41,6 @@ module simple_fifo #(
   reg  [ASIZE-1:0]    wr_ptr              ;
   reg  [DSIZE-1:0]    memory[2**ASIZE-1:0];
 
-  integer i = 0;
-
   assign wr_ptr_next = wr_ptr + 1'b1;
   assign rd_ptr_next = rd_ptr + 1'b1;
 
