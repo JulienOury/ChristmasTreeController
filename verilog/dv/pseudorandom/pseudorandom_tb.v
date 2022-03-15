@@ -26,7 +26,6 @@ module pseudorandom_tb;
 
   wire gpio;
   wire [37:0] mprj_io;
-  wire [7:0] mprj_io_0;
   wire [15:0] checkbits;
   wire [15:0] errorbits;
   
@@ -35,6 +34,8 @@ module pseudorandom_tb;
 
   assign checkbits = mprj_io[31:16];
   assign errorbits = mprj_io[15:0];
+  
+  assign (pull1,pull0)  mprj_io[37:0] = 38'b11111111111111111111111111111111111111;
 
   // External clock is used by default.  Make this artificially fast for the
   // simulation.  Normally this would be a slow clock and the digital PLL
@@ -111,8 +112,6 @@ module pseudorandom_tb;
 
   wire VDD3V3 = power1;
   wire VDD1V8 = power2;
-  wire USER_VDD3V3 = power3;
-  wire USER_VDD1V8 = power4;
   wire VSS = 1'b0;
 
   caravel uut (
