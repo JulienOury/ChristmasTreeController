@@ -128,11 +128,19 @@ jobs:
           make user_proj_example
           make user_project_wrapper
 
-      - name: Run DV RTL tests
+      - name: Run DV RTL test -> pseudorandom
+        run: |
+          make verify-pseudorandom-rtl 
+
+      - name: Run DV RTL test -> nec_ir_receiver
         run: |
           make verify-nec_ir_receiver-rtl 
 
-      - name: Run DV GL tests
+      - name: Run DV GL test -> pseudorandom
+        run: |
+          make verify-pseudorandom-gl 
+
+      - name: Run DV GL test -> nec_ir_receiver
         run: |
           make verify-nec_ir_receiver-gl 
 

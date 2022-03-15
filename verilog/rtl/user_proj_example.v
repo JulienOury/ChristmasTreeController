@@ -1,5 +1,6 @@
-// SPDX-FileCopyrightText: 2020 Efabless Corporation
-//
+////////////////////////////////////////////////////////////////////////////
+// SPDX-FileCopyrightText: 2022 , Julien OURY                       
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -12,67 +13,124 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // SPDX-License-Identifier: Apache-2.0
-
-`default_nettype none
-/*
- *-------------------------------------------------------------
- *
- * user_proj_example
- *
- * This is an example of a (trivially simple) user project,
- * showing how the user project can connect to the logic
- * analyzer, the wishbone bus, and the I/O pads.
- *
- * This project generates an integer count, which is output
- * on the user area GPIO pads (digital output only).  The
- * wishbone connection allows the project to be controlled
- * (start and stop) from the management SoC program.
- *
- * See the testbenches in directory "mprj_counter" for the
- * example programs that drive this user project.  The three
- * testbenches are "io_ports", "la_test1", and "la_test2".
- *
- *-------------------------------------------------------------
- */
+// SPDX-FileContributor: Created by Julien OURY <julien.oury@outlook.fr>
+//
+////////////////////////////////////////////////////////////////////////////
 
 module user_proj_example(
 
 `ifdef USE_POWER_PINS
-    inout vccd1,	// User area 1 1.8V supply
-    inout vssd1,	// User area 1 digital ground
+    inout  wire vccd1,	// User area 1 1.8V supply
+    inout  wire vssd1,	// User area 1 digital ground
 `endif
 
     // Wishbone Slave ports (WB MI A)
-    input wb_clk_i,
-    input wb_rst_i,
-    input wbs_stb_i,
-    input wbs_cyc_i,
-    input wbs_we_i,
-    input [3:0] wbs_sel_i,
-    input [31:0] wbs_dat_i,
-    input [31:0] wbs_adr_i,
-    output wbs_ack_o,
-    output [31:0] wbs_dat_o,
+    input  wire         wb_clk_i,
+    input  wire         wb_rst_i,
+    input  wire         wbs_stb_i,
+    input  wire         wbs_cyc_i,
+    input  wire         wbs_we_i,
+    input  wire [3:0]   wbs_sel_i,
+    input  wire [31:0]  wbs_dat_i,
+    input  wire [31:0]  wbs_adr_i,
+    output wire         wbs_ack_o,
+    output wire [31:0]  wbs_dat_o,
 
     // Logic Analyzer Signals
-    input  [127:0] la_data_in,
-    output [127:0] la_data_out,
-    input  [127:0] la_oenb,
+    input  wire [127:0] la_data_in,
+    output wire [127:0] la_data_out,
+    input  wire [127:0] la_oenb,
 
     // IOs
-    input  [`MPRJ_IO_PADS-1:0] io_in,
-    output [`MPRJ_IO_PADS-1:0] io_out,
-    output [`MPRJ_IO_PADS-1:0] io_oeb,
+    input  wire [`MPRJ_IO_PADS-1:0] io_in,
+    output wire [`MPRJ_IO_PADS-1:0] io_out,
+    output wire [`MPRJ_IO_PADS-1:0] io_oeb,
 
     // IRQ
-    output [2:0] irq
+    output wire [2:0] irq
 );
 
     wire rst_n;
-
-    wire [`MPRJ_IO_PADS-1:0] io_in;
-    wire [`MPRJ_IO_PADS-1:0] io_out;
-    wire [`MPRJ_IO_PADS-1:0] io_oeb;
+    
+    // Wishbone SLV 0 interface
+    wire           wbs_s0_cyc_o ;
+    wire           wbs_s0_stb_o ;
+    wire [31:0]    wbs_s0_adr_o ;
+    wire           wbs_s0_we_o  ;
+    wire [31:0]    wbs_s0_dat_o ;
+    wire [3:0]     wbs_s0_sel_o ;
+    wire [31:0]    wbs_s0_dat_i ;
+    wire           wbs_s0_ack_i ;
+    
+    // Wishbone SLV 1 interface
+    wire           wbs_s1_cyc_o ;
+    wire           wbs_s1_stb_o ;
+    wire [31:0]    wbs_s1_adr_o ;
+    wire           wbs_s1_we_o  ;
+    wire [31:0]    wbs_s1_dat_o ;
+    wire [3:0]     wbs_s1_sel_o ;
+    wire [31:0]    wbs_s1_dat_i ;
+    wire           wbs_s1_ack_i ;
+    
+    // Wishbone SLV 2 interface
+    wire           wbs_s2_cyc_o ;
+    wire           wbs_s2_stb_o ;
+    wire [31:0]    wbs_s2_adr_o ;
+    wire           wbs_s2_we_o  ;
+    wire [31:0]    wbs_s2_dat_o ;
+    wire [3:0]     wbs_s2_sel_o ;
+    wire [31:0]    wbs_s2_dat_i ;
+    wire           wbs_s2_ack_i ;
+    
+    // Wishbone SLV 3 interface
+    wire           wbs_s3_cyc_o ;
+    wire           wbs_s3_stb_o ;
+    wire [31:0]    wbs_s3_adr_o ;
+    wire           wbs_s3_we_o  ;
+    wire [31:0]    wbs_s3_dat_o ;
+    wire [3:0]     wbs_s3_sel_o ;
+    wire [31:0]    wbs_s3_dat_i ;
+    wire           wbs_s3_ack_i ;
+    
+    // Wishbone SLV 4 interface
+    wire           wbs_s4_cyc_o ;
+    wire           wbs_s4_stb_o ;
+    wire [31:0]    wbs_s4_adr_o ;
+    wire           wbs_s4_we_o  ;
+    wire [31:0]    wbs_s4_dat_o ;
+    wire [3:0]     wbs_s4_sel_o ;
+    wire [31:0]    wbs_s4_dat_i ;
+    wire           wbs_s4_ack_i ;
+    
+    // Wishbone SLV 5 interface
+    wire           wbs_s5_cyc_o ;
+    wire           wbs_s5_stb_o ;
+    wire [31:0]    wbs_s5_adr_o ;
+    wire           wbs_s5_we_o  ;
+    wire [31:0]    wbs_s5_dat_o ;
+    wire [3:0]     wbs_s5_sel_o ;
+    wire [31:0]    wbs_s5_dat_i ;
+    wire           wbs_s5_ack_i ;
+    
+    // Wishbone SLV 6 interface
+    wire           wbs_s6_cyc_o ;
+    wire           wbs_s6_stb_o ;
+    wire [31:0]    wbs_s6_adr_o ;
+    wire           wbs_s6_we_o  ;
+    wire [31:0]    wbs_s6_dat_o ;
+    wire [3:0]     wbs_s6_sel_o ;
+    wire [31:0]    wbs_s6_dat_i ;
+    wire           wbs_s6_ack_i ;
+    
+    // Wishbone SLV 7 interface
+    wire           wbs_s7_cyc_o ;
+    wire           wbs_s7_stb_o ;
+    wire [31:0]    wbs_s7_adr_o ;
+    wire           wbs_s7_we_o  ;
+    wire [31:0]    wbs_s7_dat_o ;
+    wire [3:0]     wbs_s7_sel_o ;
+    wire [31:0]    wbs_s7_dat_i ;
+    wire           wbs_s7_ack_i ;
 
     // IO
     assign io_out = {(`MPRJ_IO_PADS){1'b0}};
@@ -86,26 +144,163 @@ module user_proj_example(
 
     assign rst_n = ~wb_rst_i;
 	
+	wishbone_1mst_to_8slv #(
+      .ADDR_S0(32'h30000000), // Base address of Wishbone SLV 0
+      .MASK_S0(32'hFFFF0000), // Mask address of Wishbone SLV 0
+      .ADDR_S1(32'h30010000), // Base address of Wishbone SLV 1
+      .MASK_S1(32'hFFFF0000), // Mask address of Wishbone SLV 1
+      .ADDR_S2(32'h30020000), // Base address of Wishbone SLV 2
+      .MASK_S2(32'hFFFF0000), // Mask address of Wishbone SLV 2
+      .ADDR_S3(32'h30030000), // Base address of Wishbone SLV 3
+      .MASK_S3(32'hFFFF0000), // Mask address of Wishbone SLV 3
+      .ADDR_S4(32'h30040000), // Base address of Wishbone SLV 4
+      .MASK_S4(32'hFFFF0000), // Mask address of Wishbone SLV 4
+      .ADDR_S5(32'h30050000), // Base address of Wishbone SLV 5
+      .MASK_S5(32'hFFFF0000), // Mask address of Wishbone SLV 5
+      .ADDR_S6(32'h30060000), // Base address of Wishbone SLV 6
+      .MASK_S6(32'hFFFF0000), // Mask address of Wishbone SLV 6
+      .ADDR_S7(32'h30070000), // Base address of Wishbone SLV 7
+      .MASK_S7(32'hFFFF0000)  // Mask address of Wishbone SLV 7
+    ) i_wishbone_1mst_to_8slv (
+    
+      // Wishbone MST interface
+      .wbs_m_cyc_i(wbs_cyc_i),
+      .wbs_m_stb_i(wbs_stb_i),
+      .wbs_m_adr_i(wbs_adr_i),
+      .wbs_m_we_i (wbs_we_i ),
+      .wbs_m_dat_i(wbs_dat_i),
+      .wbs_m_sel_i(wbs_sel_i),
+      .wbs_m_dat_o(wbs_dat_o),
+      .wbs_m_ack_o(wbs_ack_o),
+    
+      // Wishbone SLV 0 interface
+      .wbs_s0_cyc_o(wbs_s0_cyc_o),
+      .wbs_s0_stb_o(wbs_s0_stb_o),
+      .wbs_s0_adr_o(wbs_s0_adr_o),
+      .wbs_s0_we_o (wbs_s0_we_o ),
+      .wbs_s0_dat_o(wbs_s0_dat_o),
+      .wbs_s0_sel_o(wbs_s0_sel_o),
+      .wbs_s0_dat_i(wbs_s0_dat_i),
+      .wbs_s0_ack_i(wbs_s0_ack_i),
+    
+      // Wishbone SLV 1 interface
+      .wbs_s1_cyc_o(wbs_s1_cyc_o),
+      .wbs_s1_stb_o(wbs_s1_stb_o),
+      .wbs_s1_adr_o(wbs_s1_adr_o),
+      .wbs_s1_we_o (wbs_s1_we_o ),
+      .wbs_s1_dat_o(wbs_s1_dat_o),
+      .wbs_s1_sel_o(wbs_s1_sel_o),
+      .wbs_s1_dat_i(wbs_s1_dat_i),
+      .wbs_s1_ack_i(wbs_s1_ack_i),
+    
+      // Wishbone SLV 2 interface
+      .wbs_s2_cyc_o(wbs_s2_cyc_o),
+      .wbs_s2_stb_o(wbs_s2_stb_o),
+      .wbs_s2_adr_o(wbs_s2_adr_o),
+      .wbs_s2_we_o (wbs_s2_we_o ),
+      .wbs_s2_dat_o(wbs_s2_dat_o),
+      .wbs_s2_sel_o(wbs_s2_sel_o),
+      .wbs_s2_dat_i(wbs_s2_dat_i),
+      .wbs_s2_ack_i(wbs_s2_ack_i),
+    
+      // Wishbone SLV 3 interface
+      .wbs_s3_cyc_o(wbs_s3_cyc_o),
+      .wbs_s3_stb_o(wbs_s3_stb_o),
+      .wbs_s3_adr_o(wbs_s3_adr_o),
+      .wbs_s3_we_o (wbs_s3_we_o ),
+      .wbs_s3_dat_o(wbs_s3_dat_o),
+      .wbs_s3_sel_o(wbs_s3_sel_o),
+      .wbs_s3_dat_i(wbs_s3_dat_i),
+      .wbs_s3_ack_i(wbs_s3_ack_i),
+    
+      // Wishbone SLV 4 interface
+      .wbs_s4_cyc_o(wbs_s4_cyc_o),
+      .wbs_s4_stb_o(wbs_s4_stb_o),
+      .wbs_s4_adr_o(wbs_s4_adr_o),
+      .wbs_s4_we_o (wbs_s4_we_o ),
+      .wbs_s4_dat_o(wbs_s4_dat_o),
+      .wbs_s4_sel_o(wbs_s4_sel_o),
+      .wbs_s4_dat_i(wbs_s4_dat_i),
+      .wbs_s4_ack_i(wbs_s4_ack_i),
+    
+      // Wishbone SLV 5 interface
+      .wbs_s5_cyc_o(wbs_s5_cyc_o),
+      .wbs_s5_stb_o(wbs_s5_stb_o),
+      .wbs_s5_adr_o(wbs_s5_adr_o),
+      .wbs_s5_we_o (wbs_s5_we_o ),
+      .wbs_s5_dat_o(wbs_s5_dat_o),
+      .wbs_s5_sel_o(wbs_s5_sel_o),
+      .wbs_s5_dat_i(wbs_s5_dat_i),
+      .wbs_s5_ack_i(wbs_s5_ack_i),
+    
+      // Wishbone SLV 6 interface
+      .wbs_s6_cyc_o(wbs_s6_cyc_o),
+      .wbs_s6_stb_o(wbs_s6_stb_o),
+      .wbs_s6_adr_o(wbs_s6_adr_o),
+      .wbs_s6_we_o (wbs_s6_we_o ),
+      .wbs_s6_dat_o(wbs_s6_dat_o),
+      .wbs_s6_sel_o(wbs_s6_sel_o),
+      .wbs_s6_dat_i(wbs_s6_dat_i),
+      .wbs_s6_ack_i(wbs_s6_ack_i),
+    
+      // Wishbone SLV 7 interface
+      .wbs_s7_cyc_o(wbs_s7_cyc_o),
+      .wbs_s7_stb_o(wbs_s7_stb_o),
+      .wbs_s7_adr_o(wbs_s7_adr_o),
+      .wbs_s7_we_o (wbs_s7_we_o ),
+      .wbs_s7_dat_o(wbs_s7_dat_o),
+      .wbs_s7_sel_o(wbs_s7_sel_o),
+      .wbs_s7_dat_i(wbs_s7_dat_i),
+      .wbs_s7_ack_i(wbs_s7_ack_i)
+    
+    );
+	
     nec_ir_receiver #(
       .NB_STAGES (10),
       .PSIZE     (20),
       .DSIZE     (11),
-      .ASIZE     ( 2)
-    ) nec_ir_receiver (
-      .rst_n(rst_n),
-      .clk  (wb_clk_i),
-      .wbs_cyc_i(wbs_cyc_i) ,
-      .wbs_stb_i(wbs_stb_i),
-      .wbs_adr_i(wbs_adr_i),
-      .wbs_we_i (wbs_we_i),
-      .wbs_dat_i(wbs_dat_i),
-      .wbs_sel_i(wbs_sel_i),
-      .wbs_dat_o(wbs_dat_o),
-      .wbs_ack_o(wbs_ack_o),
-      .ir_in(io_in[0]),
-      .irq(irq[0])
+      .ASIZE     ( 4)
+    ) i_nec_ir_receiver (
+      .rst_n    (rst_n       ),
+      .clk      (wb_clk_i    ),
+      .wbs_cyc_i(wbs_s0_cyc_o),
+      .wbs_stb_i(wbs_s0_stb_o),
+      .wbs_adr_i(wbs_s0_adr_o),
+      .wbs_we_i (wbs_s0_we_o ),
+      .wbs_dat_i(wbs_s0_dat_o),
+      .wbs_sel_i(wbs_s0_sel_o),
+      .wbs_dat_o(wbs_s0_dat_i),
+      .wbs_ack_o(wbs_s0_ack_i),
+      .ir_in    (io_in[37]   ),
+      .irq      (irq[0]      )
     );
+	
+	pseudorandom i_pseudorandom (
+      .rst_n     (rst_n       ),
+      .clk       (wb_clk_i    ),
+
+      // Wishbone bus
+      .wbs_cyc_i (wbs_s1_cyc_o),
+      .wbs_stb_i (wbs_s1_stb_o),
+      .wbs_adr_i (wbs_s1_adr_o),
+      .wbs_we_i  (wbs_s1_we_o ),
+      .wbs_dat_i (wbs_s1_dat_o),
+      .wbs_sel_i (wbs_s1_sel_o),
+      .wbs_dat_o (wbs_s1_dat_i),
+      .wbs_ack_o (wbs_s1_ack_i) 
+    );
+	
+    assign wbs_s2_dat_i = 32'h00000000;
+    assign wbs_s3_dat_i = 32'h00000000;
+    assign wbs_s4_dat_i = 32'h00000000;
+    assign wbs_s5_dat_i = 32'h00000000;
+    assign wbs_s6_dat_i = 32'h00000000;
+    assign wbs_s7_dat_i = 32'h00000000;
+    assign wbs_s2_ack_i = wbs_s2_stb_o;
+    assign wbs_s3_ack_i = wbs_s3_stb_o;
+    assign wbs_s4_ack_i = wbs_s4_stb_o;
+    assign wbs_s5_ack_i = wbs_s5_stb_o;
+    assign wbs_s6_ack_i = wbs_s6_stb_o;
+    assign wbs_s7_ack_i = wbs_s7_stb_o;
 
 endmodule
-
-`default_nettype wire

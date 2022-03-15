@@ -672,11 +672,17 @@ module registers #(
           end
           status_reg_addr : begin
             wbs_dat_o[31]    <= frame_available;
-            wbs_dat_o[30]    <= frame_repeat;
-            wbs_dat_o[29]    <= frame_lost;
-            wbs_dat_o[28:16] <= 13'b0;
-            wbs_dat_o[15:8]  <= frame_addr;
-            wbs_dat_o[7:0]   <= frame_data;
+            
+            if (frame_available == 1'b1) begin
+              wbs_dat_o[31]    <= 1'b1;
+              wbs_dat_o[30]    <= frame_repeat;
+              wbs_dat_o[29]    <= frame_lost;
+              wbs_dat_o[28:16] <= 13'b0;
+              wbs_dat_o[15:8]  <= frame_addr;
+              wbs_dat_o[7:0]   <= frame_data;
+            end else begin
+              wbs_dat_o        <= 32'h00000000;
+            end
           end
         endcase
 
