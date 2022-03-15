@@ -32,7 +32,7 @@ set ::env(DESIGN_IS_CORE) 0
 
 set ::env(CLOCK_PORT)   "wb_clk_i"
 set ::env(CLOCK_NET)    "nec_ir_receiver.clk"
-set ::env(CLOCK_PERIOD) "20"
+set ::env(CLOCK_PERIOD) "10"
 
 set ::env(FP_SIZING) absolute
 set ::env(DIE_AREA) "0 0 1000 1000"
