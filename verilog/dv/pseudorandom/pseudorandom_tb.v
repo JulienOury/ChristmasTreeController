@@ -17,7 +17,7 @@
 
 `timescale 1 ns / 1 ps
 
-module nec_ir_receiver_tb;
+module pseudorandom_tb;
   reg clock;
   reg RSTB;
   reg CSB;
@@ -28,15 +28,13 @@ module nec_ir_receiver_tb;
   wire [37:0] mprj_io;
   wire [7:0] mprj_io_0;
   wire [15:0] checkbits;
-  wire [7:0] addrbits;
-  wire [7:0] databits;
+  wire [15:0] errorbits;
   
   reg [7:0]  cmd_addr;
   reg [7:0]  cmd_data;
 
   assign checkbits = mprj_io[31:16];
-  assign addrbits  = mprj_io[15:8];
-  assign databits  = mprj_io[7:0];
+  assign errorbits = mprj_io[15:0];
 
   // External clock is used by default.  Make this artificially fast for the
   // simulation.  Normally this would be a slow clock and the digital PLL
@@ -49,8 +47,8 @@ module nec_ir_receiver_tb;
   end
 
   initial begin
-    $dumpfile("nec_ir_receiver.vcd");
-    $dumpvars(0, nec_ir_receiver_tb);
+    $dumpfile("pseudorandom.vcd");
+    $dumpvars(0, pseudorandom_tb);
 
     // Repeat cycles of 1000 clock edges as needed to complete testbench
     repeat (7000) begin
@@ -68,15 +66,11 @@ module nec_ir_receiver_tb;
   end
 
   initial begin
-    ir_drv.init(0, 56250); //Protocol tick period divided by 10 for simulation speed-up
-    cmd_addr = $random%256;
-    cmd_data = $random%256;
-    
+
     wait(checkbits == 16'hAB60);
     $display("Monitor: MPRJ-Logic WB Started");
-    ir_drv.send_nec(cmd_addr, cmd_data);
     wait (checkbits == 16'hAB61);
-    if ((addrbits == cmd_addr) && (databits == cmd_data)) begin
+    if (errorbits == 16'h0000) begin
       `ifdef GL
         $display("Monitor: Mega-Project WB (GL) Passed");
       `else
@@ -84,9 +78,9 @@ module nec_ir_receiver_tb;
       `endif
     end else begin
       `ifdef GL
-        $display("Monitor: Mega-Project WB (GL) Failed [0x%h -> 0x%h]", addrbits, databits);
+        $display("Monitor: Mega-Project WB (GL) Failed [0x%h errors]", errorbits);
       `else
-        $display("Monitor: Mega-Project WB (RTL) Failed [0x%h -> 0x%h]", addrbits, databits);
+        $display("Monitor: Mega-Project WB (RTL) Failed [0x%h errors]", errorbits);
       `endif
     end
     $finish;
@@ -120,10 +114,6 @@ module nec_ir_receiver_tb;
   wire USER_VDD3V3 = power3;
   wire USER_VDD1V8 = power4;
   wire VSS = 1'b0;
-  
-  ir_behavioral_driver ir_drv(
-    .ir_signal(mprj_io[37])
-  );
 
   caravel uut (
     .vddio    (VDD3V3),
@@ -155,7 +145,7 @@ module nec_ir_receiver_tb;
   );
 
   spiflash #(
-    .FILENAME("nec_ir_receiver.hex")
+    .FILENAME("pseudorandom.hex")
   ) spiflash (
     .csb(flash_csb),
     .clk(flash_clk),

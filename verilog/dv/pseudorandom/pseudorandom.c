@@ -27,8 +27,10 @@
 
 #define reg_mprj_ir_cmd        (*(volatile uint32_t*)0x30000000)
 #define reg_mprj_ir_multiplier (*(volatile uint32_t*)0x30000004)
-#define reg_mprj_ir_divider     (*(volatile uint32_t*)0x30000008)
-#define reg_mprj_ir_data        (*(volatile uint32_t*)0x3000000C)
+#define reg_mprj_ir_divider    (*(volatile uint32_t*)0x30000008)
+#define reg_mprj_ir_data       (*(volatile uint32_t*)0x3000000C)
+
+#define reg_mprj_rand          (*(volatile uint32_t*)0x30010000)
 
 void main()
 {
@@ -91,26 +93,29 @@ void main()
     reg_mprj_io_2  = GPIO_MODE_MGMT_STD_OUTPUT;
     reg_mprj_io_1  = GPIO_MODE_MGMT_STD_OUTPUT;
     reg_mprj_io_0  = GPIO_MODE_MGMT_STD_OUTPUT;
-    
-    /* Config IR receiver */
-    // 70 312,5ns / 25ns
-    reg_mprj_ir_multiplier = 0x00000064; //Protocol tick period divided by 10 for simulation speed-up
-    reg_mprj_ir_divider    = 0x00006DDD;
-    reg_mprj_ir_cmd        = 0x94000000;
 
-     /* Apply configuration */
-    reg_mprj_xfer = 1;
-    while (reg_mprj_xfer == 1);
+  /* Apply configuration */
+  reg_mprj_xfer = 1;
+  while (reg_mprj_xfer == 1);
 
-	reg_la2_oenb = reg_la2_iena = 0x00000000;    // [95:64]
+  reg_la2_oenb = reg_la2_iena = 0x00000000;    // [95:64]
 
-    // Flag start of the test
-	reg_mprj_datal = 0xAB600000;
+  // Flag start of the test
+  reg_mprj_datal = 0xAB600000;
 
-  int ir_data;
-  do {
-     ir_data = reg_mprj_ir_data;
-  } while ((ir_data & 0x80000000) != 0x80000000 );
-  reg_mprj_datal = 0xAB610000 | (ir_data & 0x0000FFFF) ;
+  int i, error, data, last_data;
+  error = 0;
+  last_data = 0x00000000;
+
+  for(i=0;i<4;i++) {
+    data = reg_mprj_rand;
+    if (data == 0x00000000) error++;
+    if (data == 0xFFFFFFFF) error++;
+    if (data == last_data ) error++;
+    last_data = data;
+  }
+  
+  // Flag end of the test
+  reg_mprj_datal = 0xAB610000 | (error & 0x0000FFFF);
 
 }

@@ -63,15 +63,9 @@ module simple_fifo #(
   end
 
   // Write operation
-  always @(negedge rst_n or posedge clk) begin
-    if (rst_n == 1'b0) begin
-      for (i = 0; i < (2**ASIZE); i = i + 1) begin
-        memory[i] <= {DSIZE{1'b0}};
-      end
-    end else begin
-      if (wr_valid && wr_ready) begin
-        memory[wr_ptr] <= wr_data;
-      end
+  always @(posedge clk) begin
+    if (wr_valid && wr_ready) begin
+      memory[wr_ptr] <= wr_data;
     end
   end
 
