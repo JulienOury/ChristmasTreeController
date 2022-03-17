@@ -297,7 +297,7 @@ module user_proj_example(
   step_motor_controller #(
     .PSIZE(16),
     .DSIZE(16)
-  ) i_step_motor_controller (
+  ) i_step_motor_controller_0 (
   
   	.rst_n(rst_n),
   	.clk(clk),
@@ -322,7 +322,7 @@ module user_proj_example(
   step_motor_controller #(
     .PSIZE(16),
     .DSIZE(16)
-  ) i_step_motor_controller (
+  ) i_step_motor_controller_1 (
   
   	.rst_n(rst_n),
   	.clk(clk),
