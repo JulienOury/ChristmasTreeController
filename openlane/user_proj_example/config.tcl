@@ -24,9 +24,11 @@ set ::env(VERILOG_FILES) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
 	$script_dir/../../verilog/rtl/user_proj_example.v \
 	$script_dir/../../verilog/rtl/wishbone_1mst_to_8slv.v \
+	$script_dir/../../verilog/rtl/prescaler.v \
 	$script_dir/../../verilog/rtl/simple_fifo.v \
 	$script_dir/../../verilog/rtl/nec_ir_receiver.v \
-	$script_dir/../../verilog/rtl/pseudorandom.v"
+	$script_dir/../../verilog/rtl/pseudorandom.v \
+	$script_dir/../../verilog/rtl/step_motor_controller.v"
 
 set ::env(DESIGN_IS_CORE) 0
 

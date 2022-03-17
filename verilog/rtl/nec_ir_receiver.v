@@ -156,10 +156,10 @@ module nec_ir_receiver #(
     .rd_ready(frame_read     )
   );
 
-  registers #(
+  nec_ir_receiver_registers #(
     .PSIZE(PSIZE),
     .DSIZE(DSIZE)
-  ) i_registers (
+  ) i_nec_ir_receiver_registers (
     .rst_n   (rst_n),
     .clk     (clk  ),
 
@@ -195,50 +195,6 @@ module nec_ir_receiver #(
     .irq             (irq)
 
   );
-
-endmodule
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Prescaler
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-module prescaler #(
-  parameter BITS = 32
-)(
-  input  wire            rst_n      , // Asynchronous reset (active low)
-  input  wire            clk        , // Clock (rising edge)
-  input  wire            clear_n  , // Synchronous reset (active low)
-
-  input  wire [BITS-1:0] multiplier , // frequency multiplier
-  input  wire [BITS-1:0] divider    , // frequency divider
-
-  output reg             tick         // output clock [Ftick=Fclk*(multiplier/divider)] with multiplier <= divider
-
-);
-
-  wire [BITS-1:0] next_counter;
-  reg  [BITS-1:0] counter;
-
-  assign next_counter = counter + multiplier;
-
-  always @(negedge rst_n or posedge clk) begin
-    if (rst_n == 1'b0) begin
-      counter <= 1'b0;
-      tick    <= 1'b0;
-    end else begin
-      if (clear_n == 1'b0) begin
-        counter <= 1'b0;
-        tick    <= 1'b0;
-      end else begin
-        if (next_counter > divider) begin
-          counter <= next_counter - divider;
-          tick    <= 1'b1;
-        end else begin
-          counter <= next_counter;
-          tick    <= 1'b0;
-        end
-      end
-    end
-  end
 
 endmodule
 
@@ -559,7 +515,7 @@ endmodule
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Registers
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-module registers #(
+module nec_ir_receiver_registers #(
   parameter PSIZE = 32          , // Size of prescaler counter(bits)
   parameter DSIZE = 11            // Size of delay counter (bits)
 )(

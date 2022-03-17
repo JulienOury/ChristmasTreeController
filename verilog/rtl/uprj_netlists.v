@@ -25,8 +25,10 @@
 `else
     `include "user_project_wrapper.v"
     `include "user_proj_example.v"
-	`include "wishbone_1mst_to_8slv.v"
+    `include "wishbone_1mst_to_8slv.v"
+    `include "prescaler.v"
     `include "simple_fifo.v"
     `include "nec_ir_receiver.v"
-	`include "pseudorandom.v"
+    `include "pseudorandom.v"
+    `include "step_motor_controller.v"
 `endif
