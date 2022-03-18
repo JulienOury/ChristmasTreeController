@@ -32,5 +32,6 @@
     `include "pseudorandom.v"
     `include "step_motor_controller.v"
     `include "string_led_controller.v"
-    `include "generic_sram_1rw1r_8x1024.v"
+    `include "generic_sram_1rw1r.v"
+    `include "inferred_sram_1rw1r.v"
 `endif

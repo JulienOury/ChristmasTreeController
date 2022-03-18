@@ -67,15 +67,21 @@ module nec_ir_receiver_tb;
     $display("%c[0m",27);
     $finish;
   end
-
+  
   initial begin
     ir_drv.init(0, 56250); //Protocol tick period divided by 10 for simulation speed-up
     cmd_addr = $random%256;
     cmd_data = $random%256;
+	wait(checkbits == 16'hAB60);
+	ir_drv.send_nec(cmd_addr, cmd_data);
+  end
+
+  initial begin
     
     wait(checkbits == 16'hAB60);
+
     $display("Monitor: MPRJ-Logic WB Started");
-    ir_drv.send_nec(cmd_addr, cmd_data);
+    
     wait (checkbits == 16'hAB61);
     if ((addrbits == cmd_addr) && (databits == cmd_data)) begin
       `ifdef GL

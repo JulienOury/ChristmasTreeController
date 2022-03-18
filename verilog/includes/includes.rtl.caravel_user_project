@@ -8,7 +8,8 @@
 -v $(USER_PROJECT_VERILOG)/rtl/pseudorandom.v
 -v $(USER_PROJECT_VERILOG)/rtl/step_motor_controller.v
 -v $(USER_PROJECT_VERILOG)/rtl/string_led_controller.v
--v $(USER_PROJECT_VERILOG)/rtl/generic_sram_1rw1r_8x1024.v
+-v $(USER_PROJECT_VERILOG)/rtl/generic_sram_1rw1r.v
+-v $(USER_PROJECT_VERILOG)/rtl/inferred_sram_1rw1r.v
 -v $(USER_PROJECT_VERILOG)/beh/ir_behavioral_driver.v
 -v $(USER_PROJECT_VERILOG)/beh/sky130_sram_1kbyte_1rw1r_8x1024_8.v
  

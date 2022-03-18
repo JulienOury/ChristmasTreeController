@@ -637,8 +637,7 @@ module nec_ir_receiver_registers #(
               wbs_dat_o[15:8]  <= frame_addr;
               wbs_dat_o[7:0]   <= frame_data;
             end else begin
-              wbs_dat_o[31]    <= 1'b1;
-              wbs_dat_o[30:0]  <= 31'b0;
+              wbs_dat_o[31:0]  <= 31'b0;
             end
           end
         endcase

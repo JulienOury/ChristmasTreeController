@@ -82,6 +82,7 @@ module user_proj_example(
   wire [31:0]    wbs_s2_dat_i ;
   wire           wbs_s2_ack_i ;
   
+  
   // Wishbone SLV 3 interface
   wire           wbs_s3_cyc_o ;
   wire           wbs_s3_stb_o ;
@@ -173,7 +174,7 @@ module user_proj_example(
   nec_ir_receiver #(
     .NB_STAGES (10),
     .PSIZE     (20),
-    .DSIZE     (11),
+    .DSIZE     (12),
     .ASIZE     ( 4)
   ) i_nec_ir_receiver (
     .rst_n    (rst_n       ),
@@ -231,12 +232,13 @@ module user_proj_example(
   );
   
   string_led_controller #(
-    .TECHNO(1),
-    .PSIZE(20)
+    .TECHNO( 0),
+    .ASIZE ( 6),
+    .PSIZE (20)
   ) i_string_led_controller (
 `ifdef USE_POWER_PINS
-	.vccd1     (vccd1       ), // User area 1 1.8V power
-	.vssd1     (vssd1       ), // User area 1 digital ground
+	.vccd1     (vccd1       ),
+	.vssd1     (vssd1       ),
 `endif
     .rst_n     (rst_n       ),
     .clk       (wb_clk_i    ),
