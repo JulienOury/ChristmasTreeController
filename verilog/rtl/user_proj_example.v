@@ -92,63 +92,23 @@ module user_proj_example(
   wire [31:0]    wbs_s3_dat_i ;
   wire           wbs_s3_ack_i ;
   
-  // Wishbone SLV 4 interface
-  wire           wbs_s4_cyc_o ;
-  wire           wbs_s4_stb_o ;
-  wire [31:0]    wbs_s4_adr_o ;
-  wire           wbs_s4_we_o  ;
-  wire [31:0]    wbs_s4_dat_o ;
-  wire [3:0]     wbs_s4_sel_o ;
-  wire [31:0]    wbs_s4_dat_i ;
-  wire           wbs_s4_ack_i ;
-  
-  // Wishbone SLV 5 interface
-  wire           wbs_s5_cyc_o ;
-  wire           wbs_s5_stb_o ;
-  wire [31:0]    wbs_s5_adr_o ;
-  wire           wbs_s5_we_o  ;
-  wire [31:0]    wbs_s5_dat_o ;
-  wire [3:0]     wbs_s5_sel_o ;
-  wire [31:0]    wbs_s5_dat_i ;
-  wire           wbs_s5_ack_i ;
-  
-  // Wishbone SLV 6 interface
-  wire           wbs_s6_cyc_o ;
-  wire           wbs_s6_stb_o ;
-  wire [31:0]    wbs_s6_adr_o ;
-  wire           wbs_s6_we_o  ;
-  wire [31:0]    wbs_s6_dat_o ;
-  wire [3:0]     wbs_s6_sel_o ;
-  wire [31:0]    wbs_s6_dat_i ;
-  wire           wbs_s6_ack_i ;
-  
-  // Wishbone SLV 7 interface
-  wire           wbs_s7_cyc_o ;
-  wire           wbs_s7_stb_o ;
-  wire [31:0]    wbs_s7_adr_o ;
-  wire           wbs_s7_we_o  ;
-  wire [31:0]    wbs_s7_dat_o ;
-  wire [3:0]     wbs_s7_sel_o ;
-  wire [31:0]    wbs_s7_dat_i ;
-  wire           wbs_s7_ack_i ;
-  
   // IO
-  assign io_oeb[37:32] = {( 6){1'b0}};
-  assign io_oeb[27: 0] = {(28){1'b0}};
+  assign io_out[37]    =       1'b0  ;
+  assign io_out[31: 0] = {(32){1'b0}};
 
-  assign io_oeb[37:32] = {( 6){1'b1}};
-  assign io_oeb[31:28] = {( 4){1'b0}}; // MOTOR outputs
-  assign io_oeb[27: 0] = {(28){1'b1}};
-  
-  // IRQ
-  assign irq[2:1] = 2'b00;  // Unused
+  assign io_oeb[37]    =       1'b1  ;
+  assign io_oeb[36]    =       1'b0  ; // String LED outputs
+  assign io_oeb[35:32] = {( 4){1'b0}}; // MOTOR outputs
+  assign io_oeb[31: 0] = {(32){1'b1}};
   
   // LA
   assign la_data_out = {(128){1'b0}};
   
+  assign irq[2] = 1'b0;
+  
   assign rst_n = ~wb_rst_i;
   
-  wishbone_1mst_to_8slv #(
+  wishbone_1mst_to_4slv #(
     .ADDR_S0(32'h30000000), // Base address of Wishbone SLV 0
     .MASK_S0(32'hFFFF0000), // Mask address of Wishbone SLV 0
     .ADDR_S1(32'h30010000), // Base address of Wishbone SLV 1
@@ -156,16 +116,8 @@ module user_proj_example(
     .ADDR_S2(32'h30020000), // Base address of Wishbone SLV 2
     .MASK_S2(32'hFFFF0000), // Mask address of Wishbone SLV 2
     .ADDR_S3(32'h30030000), // Base address of Wishbone SLV 3
-    .MASK_S3(32'hFFFF0000), // Mask address of Wishbone SLV 3
-    .ADDR_S4(32'h30040000), // Base address of Wishbone SLV 4
-    .MASK_S4(32'hFFFF0000), // Mask address of Wishbone SLV 4
-    .ADDR_S5(32'h30050000), // Base address of Wishbone SLV 5
-    .MASK_S5(32'hFFFF0000), // Mask address of Wishbone SLV 5
-    .ADDR_S6(32'h30060000), // Base address of Wishbone SLV 6
-    .MASK_S6(32'hFFFF0000), // Mask address of Wishbone SLV 6
-    .ADDR_S7(32'h30070000), // Base address of Wishbone SLV 7
-    .MASK_S7(32'hFFFF0000)  // Mask address of Wishbone SLV 7
-  ) i_wishbone_1mst_to_8slv (
+    .MASK_S3(32'hFFFF0000)  // Mask address of Wishbone SLV 3
+  ) i_wishbone_1mst_to_4slv (
   
     // Wishbone MST interface
     .wbs_m_cyc_i(wbs_cyc_i),
@@ -215,48 +167,7 @@ module user_proj_example(
     .wbs_s3_dat_o(wbs_s3_dat_o),
     .wbs_s3_sel_o(wbs_s3_sel_o),
     .wbs_s3_dat_i(wbs_s3_dat_i),
-    .wbs_s3_ack_i(wbs_s3_ack_i),
-  
-    // Wishbone SLV 4 interface
-    .wbs_s4_cyc_o(wbs_s4_cyc_o),
-    .wbs_s4_stb_o(wbs_s4_stb_o),
-    .wbs_s4_adr_o(wbs_s4_adr_o),
-    .wbs_s4_we_o (wbs_s4_we_o ),
-    .wbs_s4_dat_o(wbs_s4_dat_o),
-    .wbs_s4_sel_o(wbs_s4_sel_o),
-    .wbs_s4_dat_i(wbs_s4_dat_i),
-    .wbs_s4_ack_i(wbs_s4_ack_i),
-  
-    // Wishbone SLV 5 interface
-    .wbs_s5_cyc_o(wbs_s5_cyc_o),
-    .wbs_s5_stb_o(wbs_s5_stb_o),
-    .wbs_s5_adr_o(wbs_s5_adr_o),
-    .wbs_s5_we_o (wbs_s5_we_o ),
-    .wbs_s5_dat_o(wbs_s5_dat_o),
-    .wbs_s5_sel_o(wbs_s5_sel_o),
-    .wbs_s5_dat_i(wbs_s5_dat_i),
-    .wbs_s5_ack_i(wbs_s5_ack_i),
-  
-    // Wishbone SLV 6 interface
-    .wbs_s6_cyc_o(wbs_s6_cyc_o),
-    .wbs_s6_stb_o(wbs_s6_stb_o),
-    .wbs_s6_adr_o(wbs_s6_adr_o),
-    .wbs_s6_we_o (wbs_s6_we_o ),
-    .wbs_s6_dat_o(wbs_s6_dat_o),
-    .wbs_s6_sel_o(wbs_s6_sel_o),
-    .wbs_s6_dat_i(wbs_s6_dat_i),
-    .wbs_s6_ack_i(wbs_s6_ack_i),
-  
-    // Wishbone SLV 7 interface
-    .wbs_s7_cyc_o(wbs_s7_cyc_o),
-    .wbs_s7_stb_o(wbs_s7_stb_o),
-    .wbs_s7_adr_o(wbs_s7_adr_o),
-    .wbs_s7_we_o (wbs_s7_we_o ),
-    .wbs_s7_dat_o(wbs_s7_dat_o),
-    .wbs_s7_sel_o(wbs_s7_sel_o),
-    .wbs_s7_dat_i(wbs_s7_dat_i),
-    .wbs_s7_ack_i(wbs_s7_ack_i)
-  
+    .wbs_s3_ack_i(wbs_s3_ack_i)
   );
   
   nec_ir_receiver #(
@@ -295,12 +206,12 @@ module user_proj_example(
   );
   
   step_motor_controller #(
-    .PSIZE(16),
-    .DSIZE(16)
-  ) i_step_motor_controller_0 (
+    .PSIZE(20),
+    .DSIZE(20)
+  ) i_step_motor_controller (
   
-  	.rst_n(rst_n),
-  	.clk(clk),
+    .rst_n     (rst_n       ),
+    .clk       (wb_clk_i    ),
   
     // Wishbone bus
     .wbs_cyc_i (wbs_s2_cyc_o),
@@ -313,21 +224,22 @@ module user_proj_example(
     .wbs_ack_o (wbs_s2_ack_i),
   
     // Motor outputs
-    .motor_a1  (io_out[31]),
-    .motor_a2  (io_out[30]),
-    .motor_b1  (io_out[29]),
-    .motor_b2  (io_out[28])
+    .motor_a1  (io_out[35]),
+    .motor_a2  (io_out[34]),
+    .motor_b1  (io_out[33]),
+    .motor_b2  (io_out[32])
   );
   
-  step_motor_controller #(
-    .PSIZE(16),
-    .DSIZE(16)
-  ) i_step_motor_controller_1 (
-  
-  	.rst_n(rst_n),
-  	.clk(clk),
-  
-    // Wishbone bus
+  string_led_controller #(
+    .TECHNO(1),
+    .PSIZE(20)
+  ) i_string_led_controller (
+`ifdef USE_POWER_PINS
+	.vccd1     (vccd1       ), // User area 1 1.8V power
+	.vssd1     (vssd1       ), // User area 1 digital ground
+`endif
+    .rst_n     (rst_n       ),
+    .clk       (wb_clk_i    ),
     .wbs_cyc_i (wbs_s3_cyc_o),
     .wbs_stb_i (wbs_s3_stb_o),
     .wbs_adr_i (wbs_s3_adr_o),
@@ -336,21 +248,8 @@ module user_proj_example(
     .wbs_sel_i (wbs_s3_sel_o),
     .wbs_dat_o (wbs_s3_dat_i),
     .wbs_ack_o (wbs_s3_ack_i),
-  
-    // Motor outputs
-    .motor_a1  (io_out[27]),
-    .motor_a2  (io_out[26]),
-    .motor_b1  (io_out[25]),
-    .motor_b2  (io_out[24])
+    .irq       (irq[1]      ),
+    .sout      (io_out[36]  )
   );
-
-  assign wbs_s4_dat_i = 32'h00000000;
-  assign wbs_s5_dat_i = 32'h00000000;
-  assign wbs_s6_dat_i = 32'h00000000;
-  assign wbs_s7_dat_i = 32'h00000000;
-  assign wbs_s4_ack_i = wbs_s4_stb_o;
-  assign wbs_s5_ack_i = wbs_s5_stb_o;
-  assign wbs_s6_ack_i = wbs_s6_stb_o;
-  assign wbs_s7_ack_i = wbs_s7_stb_o;
 
 endmodule

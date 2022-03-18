@@ -2,3 +2,4 @@
 $USER_PROJECT_VERILOG/gl/user_project_wrapper.v	     
 $USER_PROJECT_VERILOG/gl/user_proj_example.v
 $USER_PROJECT_VERILOG/beh/ir_behavioral_driver.v
+$USER_PROJECT_VERILOG/beh/sky130_sram_1kbyte_1rw1r_8x1024_8.v

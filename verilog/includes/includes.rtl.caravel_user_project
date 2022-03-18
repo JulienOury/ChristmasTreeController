@@ -1,11 +1,14 @@
 # Caravel user project includes
 -v $(USER_PROJECT_VERILOG)/rtl/user_project_wrapper.v	     
 -v $(USER_PROJECT_VERILOG)/rtl/user_proj_example.v
--v $(USER_PROJECT_VERILOG)/rtl/wishbone_1mst_to_8slv.v
+-v $(USER_PROJECT_VERILOG)/rtl/wishbone_1mst_to_4slv.v
 -v $(USER_PROJECT_VERILOG)/rtl/prescaler.v
 -v $(USER_PROJECT_VERILOG)/rtl/simple_fifo.v
 -v $(USER_PROJECT_VERILOG)/rtl/nec_ir_receiver.v
 -v $(USER_PROJECT_VERILOG)/rtl/pseudorandom.v
 -v $(USER_PROJECT_VERILOG)/rtl/step_motor_controller.v
+-v $(USER_PROJECT_VERILOG)/rtl/string_led_controller.v
+-v $(USER_PROJECT_VERILOG)/rtl/generic_sram_1rw1r_8x1024.v
 -v $(USER_PROJECT_VERILOG)/beh/ir_behavioral_driver.v
+-v $(USER_PROJECT_VERILOG)/beh/sky130_sram_1kbyte_1rw1r_8x1024_8.v
  

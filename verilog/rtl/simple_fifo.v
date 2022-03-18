@@ -17,8 +17,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 module simple_fifo #(
-  parameter ASIZE =  4, // FIFO size (FIFO_size=(2**ASIZE)-1)
-  parameter DSIZE = 32  // Number of bits of data
+  parameter ASIZE =  5 , // FIFO size (FIFO_size=(2**ASIZE)-1)
+  parameter DSIZE = 32   // Number of bits of data
 )(
   input  wire             rst_n   , // Asynchronous reset (active low)
   input  wire             clk     , // Clock (rising edge)

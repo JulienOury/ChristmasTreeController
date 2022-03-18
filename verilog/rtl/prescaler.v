@@ -22,7 +22,7 @@ module prescaler #(
 )(
   input  wire            rst_n      , // Asynchronous reset (active low)
   input  wire            clk        , // Clock (rising edge)
-  input  wire            clear_n  , // Synchronous reset (active low)
+  input  wire            clear_n    , // Synchronous reset (active low)
 
   input  wire [BITS-1:0] multiplier , // frequency multiplier
   input  wire [BITS-1:0] divider    , // frequency divider

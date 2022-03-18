@@ -18,8 +18,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 module step_motor_controller #(
-  parameter PSIZE     = 32     , // Size of prescaler counter(bits)
-  parameter DSIZE     = 16       // Size of delay counter (bits)
+  parameter PSIZE = 32         , // Size of prescaler counter(bits)
+  parameter DSIZE = 32           // Size of delay counter (bits)
 )(
 
   input  wire        rst_n     , // Asynchronous reset (active low)
@@ -178,7 +178,7 @@ endmodule
 // Motor_sequencer
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module motor_sequencer #(
-  parameter DSIZE = 16 // Number of bits of delay counter
+  parameter DSIZE = 32 // Number of bits of delay counter
 )(
   input  wire             rst_n         , // Asynchronous reset (active low)
   input  wire             clk           , // Clock (rising edge)
@@ -288,8 +288,8 @@ endmodule
 // Registers
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module step_motor_controller_registers #(
-  parameter PSIZE = 32          , // Size of prescaler counter(bits)
-  parameter DSIZE = 16            // Size of delay counter (bits)
+  parameter PSIZE = 32 , // Size of prescaler counter(bits)
+  parameter DSIZE = 32   // Size of delay counter (bits)
 )(
 
   input                   rst_n           , // Asynchronous reset (active low)
@@ -366,17 +366,18 @@ module step_motor_controller_registers #(
         //Write
         case (addr)
           config_reg_addr : begin
-            wbs_dat_o[31] <= controller_en; if (wstrb[31]) controller_en <= wbs_dat_i[31];
-            wbs_dat_o[30] <= ptype        ; if (wstrb[30]) ptype         <= wbs_dat_i[30];
-            wbs_dat_o[29] <= mode         ; if (wstrb[29]) mode          <= wbs_dat_i[29];
-            wbs_dat_o[ 7] <= duty_cycle[7]; if (wstrb[ 7]) duty_cycle[7] <= wbs_dat_i[ 7];
-            wbs_dat_o[ 6] <= duty_cycle[6]; if (wstrb[ 6]) duty_cycle[6] <= wbs_dat_i[ 6];
-            wbs_dat_o[ 5] <= duty_cycle[5]; if (wstrb[ 5]) duty_cycle[5] <= wbs_dat_i[ 5];
-            wbs_dat_o[ 4] <= duty_cycle[4]; if (wstrb[ 4]) duty_cycle[4] <= wbs_dat_i[ 4];
-            wbs_dat_o[ 3] <= duty_cycle[3]; if (wstrb[ 3]) duty_cycle[3] <= wbs_dat_i[ 3];
-            wbs_dat_o[ 2] <= duty_cycle[2]; if (wstrb[ 2]) duty_cycle[2] <= wbs_dat_i[ 2];
-            wbs_dat_o[ 1] <= duty_cycle[1]; if (wstrb[ 1]) duty_cycle[1] <= wbs_dat_i[ 1];
-            wbs_dat_o[ 0] <= duty_cycle[0]; if (wstrb[ 0]) duty_cycle[0] <= wbs_dat_i[ 0];
+            wbs_dat_o[31]   <= controller_en; if (wstrb[31]) controller_en <= wbs_dat_i[31];
+            wbs_dat_o[30]   <= ptype        ; if (wstrb[30]) ptype         <= wbs_dat_i[30];
+            wbs_dat_o[29]   <= mode         ; if (wstrb[29]) mode          <= wbs_dat_i[29];
+            wbs_dat_o[28:8] <= 11'b0;
+            wbs_dat_o[ 7]   <= duty_cycle[7]; if (wstrb[ 7]) duty_cycle[7] <= wbs_dat_i[ 7];
+            wbs_dat_o[ 6]   <= duty_cycle[6]; if (wstrb[ 6]) duty_cycle[6] <= wbs_dat_i[ 6];
+            wbs_dat_o[ 5]   <= duty_cycle[5]; if (wstrb[ 5]) duty_cycle[5] <= wbs_dat_i[ 5];
+            wbs_dat_o[ 4]   <= duty_cycle[4]; if (wstrb[ 4]) duty_cycle[4] <= wbs_dat_i[ 4];
+            wbs_dat_o[ 3]   <= duty_cycle[3]; if (wstrb[ 3]) duty_cycle[3] <= wbs_dat_i[ 3];
+            wbs_dat_o[ 2]   <= duty_cycle[2]; if (wstrb[ 2]) duty_cycle[2] <= wbs_dat_i[ 2];
+            wbs_dat_o[ 1]   <= duty_cycle[1]; if (wstrb[ 1]) duty_cycle[1] <= wbs_dat_i[ 1];
+            wbs_dat_o[ 0]   <= duty_cycle[0]; if (wstrb[ 0]) duty_cycle[0] <= wbs_dat_i[ 0];
           end
           multiplier_reg_addr : begin
             for (i = 0; i < 32; i = i + 1) begin
@@ -406,9 +407,11 @@ module step_motor_controller_registers #(
             end
           end
           step_reg_addr : begin
-            wbs_dat_o[30]   <= direction    ; if (wstrb[30]) direction     <= wbs_dat_i[30];
-            wbs_dat_o[29]   <= free         ; if (wstrb[29]) free          <= wbs_dat_i[29];
-            wbs_dat_o[23:0] <= cycles;
+            wbs_dat_o[31]    <= run;
+            wbs_dat_o[30]    <= direction    ; if (wstrb[30]) direction     <= wbs_dat_i[30];
+            wbs_dat_o[29]    <= free         ; if (wstrb[29]) free          <= wbs_dat_i[29];
+            wbs_dat_o[28:22] <= 7'b0;
+            wbs_dat_o[23:0]  <= cycles;
           end
         endcase
 

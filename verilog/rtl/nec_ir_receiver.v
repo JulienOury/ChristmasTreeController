@@ -17,10 +17,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 module nec_ir_receiver #(
-  parameter NB_STAGES = 3      , // Number of metastability filter stages
+  parameter NB_STAGES =  2     , // Number of metastability filter stages
   parameter PSIZE     = 32     , // Size of prescaler counter(bits)
-  parameter DSIZE     = 11     , // Size of delay counter (bits)
-  parameter ASIZE     = 4        // FIFO size (FIFO_size=(2**ASIZE)-1)
+  parameter DSIZE     = 32     , // Size of delay counter (bits)
+  parameter ASIZE     =  5       // FIFO size (FIFO_size=(2**ASIZE)-1)
 )(
 
   input  wire        rst_n     , // Asynchronous reset (active low)
@@ -202,7 +202,7 @@ endmodule
 // Metastability filter
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module metastability_filter #(
-  parameter NB_STAGES = 1
+  parameter NB_STAGES = 2
 )(
   input  wire  rst_n      , // Asynchronous reset (active low)
   input  wire  clk        , // Clock (rising edge)
@@ -278,11 +278,11 @@ endmodule
 // Event catcher
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module event_catcher #(
-  parameter DBITS = 11 // Number of bits of delay counter
+  parameter DBITS = 32 // Number of bits of delay counter
 )(
   input  wire             rst_n         , // Asynchronous reset (active low)
   input  wire             clk           , // Clock (rising edge)
-  input  wire             clear_n     , // Synchronous reset (active low)
+  input  wire             clear_n       , // Synchronous reset (active low)
   input  wire [DBITS-1:0] reload_offset , // Delay counter reload offset
 
   input  wire             i_value       , // Input value
@@ -359,7 +359,7 @@ endmodule
 // Frame decoder
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module frame_decoder #(
-  parameter DBITS = 11 // Number of bits of delay counter
+  parameter DBITS = 32 // Number of bits of delay counter
 )(
   input  wire  rst_n                    , // Asynchronous reset (active low)
   input  wire  clk                      , // Clock (rising edge)
@@ -516,8 +516,8 @@ endmodule
 // Registers
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 module nec_ir_receiver_registers #(
-  parameter PSIZE = 32          , // Size of prescaler counter(bits)
-  parameter DSIZE = 11            // Size of delay counter (bits)
+  parameter PSIZE = 32 , // Size of prescaler counter(bits)
+  parameter DSIZE = 32   // Size of delay counter (bits)
 )(
 
   input                   rst_n           , // Asynchronous reset (active low)
@@ -607,6 +607,7 @@ module nec_ir_receiver_registers #(
             wbs_dat_o[28] <= polarity     ; if (wstrb[28]) polarity    <= wbs_dat_i[28];
             wbs_dat_o[27] <= tolerance[1] ; if (wstrb[27]) tolerance[1]<= wbs_dat_i[27];
             wbs_dat_o[26] <= tolerance[0] ; if (wstrb[26]) tolerance[0]<= wbs_dat_i[26];
+            wbs_dat_o[25:0] <= 26'b0;
           end
           multiplier_reg_addr : begin
             for (i = 0; i < 32; i = i + 1) begin
@@ -627,7 +628,6 @@ module nec_ir_receiver_registers #(
             end
           end
           status_reg_addr : begin
-            wbs_dat_o[31]    <= frame_available;
             
             if (frame_available == 1'b1) begin
               wbs_dat_o[31]    <= 1'b1;
@@ -637,7 +637,8 @@ module nec_ir_receiver_registers #(
               wbs_dat_o[15:8]  <= frame_addr;
               wbs_dat_o[7:0]   <= frame_data;
             end else begin
-              wbs_dat_o        <= 32'h00000000;
+              wbs_dat_o[31]    <= 1'b1;
+              wbs_dat_o[30:0]  <= 31'b0;
             end
           end
         endcase
