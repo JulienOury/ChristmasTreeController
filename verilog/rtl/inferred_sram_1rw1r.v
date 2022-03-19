@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////
-// SPDX-FileCopyrightText: 2022 , Julien OURY                       
-// 
+// SPDX-FileCopyrightText: 2022 , Julien OURY
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -22,19 +22,19 @@ module inferred_sram_1rw1r #(
 )(
   input  wire             clk    , // Clock (rising edge)
 
-  // Port 0 (R/W)   
+  // Port 0 (R/W)
   input  wire             cs0_n  , // Chip select (active low)
   input  wire             we0_n  , // Write enable (active low)
   input  wire [ASIZE-1:0] addr0  , // Adress bus
   input  wire [DSIZE-1:0] wdata0 , // Data bus (write)
   output reg  [DSIZE-1:0] rdata0 , // Data bus (read)
 
-  // Port 1 (R/W)   
+  // Port 1 (R/W)
   input  wire             cs1_n  , // Chip select (active low)
   input  wire [ASIZE-1:0] addr1  , // Adress bus
   output reg  [DSIZE-1:0] rdata1   // Data bus (read)
 );
- 
+
   reg              r_cs0_n ;
   reg              r_we0_n ;
   reg  [ASIZE-1:0] r_addr0 ;
@@ -59,7 +59,7 @@ module inferred_sram_1rw1r #(
       memory[r_addr0] <= r_wdata0;
     end
   end
-  
+
   // Port 0 : Read operation
   always @(posedge clk) begin
     if (!r_cs0_n && r_we0_n) begin

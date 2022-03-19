@@ -20,7 +20,7 @@
 .SILENT: clean all
 
 
-PATTERNS = pseudorandom nec_ir_receiver
+PATTERNS = pseudorandom nec_ir_receiver string_led_controller step_motor_controller
 
 all:  ${PATTERNS}
 

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////
-// SPDX-FileCopyrightText: 2022 , Julien OURY                       
-// 
+// SPDX-FileCopyrightText: 2022 , Julien OURY
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -70,8 +70,8 @@ module string_led_controller #(
   wire             cs1_n           ;
   wire [ASIZE-1:0] addr1           ;
   wire [7:0]       rdata1          ;
-  
-  
+
+
 
   prescaler #(
     .BITS(PSIZE)
@@ -83,7 +83,7 @@ module string_led_controller #(
     .divider    (divider       ),
     .tick       (tick          )
   );
-  
+
   bit_generator i_bit_generator (
     .rst_n      (rst_n         ),
     .clk        (clk           ),
@@ -95,32 +95,32 @@ module string_led_controller #(
     .ready      (ready         ),
     .sout       (sout          )
   );
-  
+
   string_led_sequencer #(
     .ASIZE (ASIZE)
   ) i_sequencer(
     .rst_n      (rst_n         ),
     .clk        (clk           ),
     .clear_n    (controller_en ),
-    
+
     // Configuration/management
     .w_count    (w_count       ),
     .w_first    (w_first       ),
     .w_last     (w_last        ),
     .start      (start         ),
     .progress   (progress      ),
-    
-    // Memory port   
+
+    // Memory port
     .cs_n       (cs1_n         ),
     .addr       (addr1         ),
     .rdata      (rdata1        ),
-    
+
     // Outut data
     .bit_value  (bit_value     ),
     .valid      (valid         ),
     .ready      (ready         )
   );
-  
+
   generic_sram_1rw1r #(
     .TECHNO(TECHNO),
     .ASIZE (ASIZE ),
@@ -131,15 +131,15 @@ module string_led_controller #(
     .vssd1    (vssd1 ),
   `endif
     .clk      (clk   ),
-  
-    // Port 0 (R/W)   
+
+    // Port 0 (R/W)
     .cs0_n    (cs0_n ),
     .we0_n    (we0_n ),
     .addr0    (addr0 ),
     .wdata0   (wdata0),
     .rdata0   (rdata0),
-  
-    // Port 1 (R/W)   
+
+    // Port 1 (R/W)
     .cs1_n    (cs1_n ),
     .addr1    (addr1 ),
     .rdata1   (rdata1)
@@ -188,11 +188,11 @@ module bit_generator (
   input  wire  tick       , // 50ms tick input
 
   input  wire  polarity   , // Polarity of output signal
-  
+
   input  wire  bit_value  , // Bit value
   input  wire  valid      , // Valid bit value (active high)
   output reg   ready      , // Serial output
-  
+
   output reg   sout         // Serial output
 );
 
@@ -212,7 +212,7 @@ module bit_generator (
       polar <= 1'b0;
       sout  <= 1'b0;
     end else begin
-    
+
       if (clear_n == 1'b0) begin
         count <= val_p;
         ready <= 1'b0;
@@ -232,13 +232,13 @@ module bit_generator (
             count <= count + 1'b1;
           end
         end
-        
+
         if ((tick == 1'b1) && (count[4:3] == 2'b11) && (valid == 1'b1)) begin
           ready <= 1'b1;
         end else begin
           ready <= 1'b0;
         end
-        
+
         if (((dbit == 1'b0) && ((count[4] == 1'b1) || (count[3] == 1'b1))) ||
             ((dbit == 1'b1) &&  (count[4] == 1'b1)                       ) ) begin
           sout <= polar;
@@ -260,19 +260,19 @@ module string_led_sequencer #(
   input  wire             rst_n    , // Asynchronous reset (active low)
   input  wire             clk      , // Clock (rising edge)
   input  wire             clear_n  , // Synchronous reset (active low)
-  
+
   // Configuration/management
   input  wire [3:0]       w_count  , // Number of iteration
   input  wire [ASIZE-1:0] w_first  , // First word index
   input  wire [ASIZE-1:0] w_last   , // Last word index
   input  wire             start    , // Start strobe (active high)
   output wire             progress , // Progress status
-  
-  // Memory port   
+
+  // Memory port
   output wire             cs_n     , // Chip select (active low)
   output reg  [ASIZE-1:0] addr     , // Adress bus
   input  wire [7:0]       rdata    , // Data bus (read)
-  
+
   // Outut data
   output reg              bit_value, // Bit value
   output reg              valid    , // Data valid (active high)
@@ -298,7 +298,7 @@ module string_led_sequencer #(
     idle_c_state     = 4'b1110,
     idle_d_state     = 4'b1111;
 
-  
+
   wire [ASIZE-1:0]  next_addr;
   wire [3:0]        next_count;
   reg  [ASIZE-1:0]  first_addr;
@@ -306,7 +306,7 @@ module string_led_sequencer #(
   reg  [3:0]        count;
   reg  [7:0]        data     ;
   reg  [3:0]        state_reg;
-  
+
   assign next_addr  = addr + 1'b1;
   assign next_count = count - 1'b1;
 
@@ -314,22 +314,22 @@ module string_led_sequencer #(
   always @(negedge rst_n or posedge clk) begin
     if (rst_n == 1'b0) begin
       state_reg  <= idle_state;
-	  count      <= 4'b0000;
+      count      <= 4'b0000;
       addr       <= {(ASIZE){1'b0}};
       first_addr <= {(ASIZE){1'b0}};
       last_addr  <= {(ASIZE){1'b0}};
       data       <= 8'b00000000;
     end else begin
-    
+
       if (clear_n == 1'b0) begin
         state_reg  <= idle_state;
-	    count      <= 4'b0000;
+        count      <= 4'b0000;
         addr       <= {(ASIZE){1'b0}};
         first_addr <= {(ASIZE){1'b0}};
         last_addr  <= {(ASIZE){1'b0}};
         data       <= 8'b00000000;
       end else begin
-    
+
         case(state_reg)
           idle_state,
           idle_a_state,
@@ -339,7 +339,7 @@ module string_led_sequencer #(
           begin
             if (start) begin
               state_reg <= ram_ctrl_state;
-			  count      <= w_count;
+              count      <= w_count;
               addr       <= w_first;
               first_addr <= w_first;
               last_addr  <= w_last;
@@ -397,12 +397,12 @@ module string_led_sequencer #(
                 state_reg <= ram_ctrl_state;
               end else begin
                 addr      <= first_addr;
-			    if (count == 4'b0000) begin
+                if (count == 4'b0000) begin
                   state_reg <= idle_state;
-				end else begin
-				  count     <= next_count;
-				  state_reg <= ram_ctrl_state;
-				end
+                end else begin
+                  count     <= next_count;
+                  state_reg <= ram_ctrl_state;
+                end
               end
             end
           end
@@ -410,7 +410,7 @@ module string_led_sequencer #(
       end
     end
   end
-  
+
   always @(*) begin
     case (state_reg)
       send_bit7_state : begin
@@ -451,7 +451,7 @@ module string_led_sequencer #(
       end
     endcase
   end
-  
+
   assign cs_n     = (state_reg==ram_ctrl_state) ? 1'b0 : 1'b1;
   assign progress = (state_reg==    idle_state) ? 1'b0 : 1'b1;
 
@@ -473,7 +473,7 @@ module string_led_registers #(
   output reg  [PSIZE-1:0] multiplier      , // frequency multiplier
   output reg  [PSIZE-1:0] divider         , // frequency divider
   output reg              polarity        , // Polarity of output signal
-  
+
   // Sequencer
   output reg  [3:0]       w_count         , // Number of iteration
   output reg  [ASIZE-1:0] w_first         , // First word index
@@ -493,10 +493,10 @@ module string_led_registers #(
 
   // Interrupt
   output reg              irq             , // Interrupt
-  
-  // Memory  
+
+  // Memory
   output reg              cs_n            , // Chip select (active low)
-  output reg              we_n            , // Write enable (active low)
+  output wire             we_n            , // Write enable (active low)
   output reg  [ASIZE-1:0] addr            , // Adress bus
   output reg  [7:0]       wdata           , // Data bus (write)
   input  wire [7:0]       rdata             // Data bus (read)
@@ -515,7 +515,6 @@ module string_led_registers #(
 
   reg         irq_en;
   reg         ready;
-  reg  [1:0]  mstate;
   reg         last_progress;
 
   integer i = 0;
@@ -524,14 +523,13 @@ module string_led_registers #(
   assign wstrb     = {{8{wbs_sel_i[3]}}, {8{wbs_sel_i[2]}}, {8{wbs_sel_i[1]}}, {8{wbs_sel_i[0]}}} & {32{wbs_we_i}};
   assign wbs_addr  = wbs_adr_i[3:2];
   assign wbs_ack_o = ready;
+  assign we_n      = 1'b0;
 
   always @(negedge rst_n or posedge clk) begin
     if (rst_n == 1'b0) begin
       cs_n          <= 1'b1;
-      we_n          <= 1'b0;
-      addr          <= 10'b0000000000;
+      addr          <= {(ASIZE){1'b0}};
       wdata         <= 8'h00;
-      mstate        <= 2'b00;
       ready         <= 1'b0;
       wbs_dat_o     <= 32'h00000000;
       controller_en <= 1'b0;
@@ -539,7 +537,7 @@ module string_led_registers #(
       polarity      <= 1'b0;
       multiplier    <= {(PSIZE){1'b0}};
       divider       <= {(PSIZE){1'b0}};
-	  w_count       <= 4'b0000;
+      w_count       <= 4'b0000;
       w_first       <= {(ASIZE){1'b0}};
       w_last        <= {(ASIZE){1'b0}};
       start         <= 1'b0;
@@ -582,12 +580,12 @@ module string_led_registers #(
               wbs_dat_o[27] <= w_count[2]; if (wstrb[27]) w_count[2] <= wbs_dat_i[27];
               wbs_dat_o[26] <= w_count[1]; if (wstrb[26]) w_count[1] <= wbs_dat_i[26];
               wbs_dat_o[25] <= w_count[0]; if (wstrb[25]) w_count[0] <= wbs_dat_i[25];
-			  
+
               for (i = 0; i < 11; i = i + 1) begin
                 if (i >= ASIZE) begin
                   wbs_dat_o[i+12] <= 1'b0 ;
                 end else begin
-                  wbs_dat_o[i+12] <= w_last[i+12]; if (wstrb[i+12]) w_last[i+12] <= wbs_dat_i[i+12];
+                  wbs_dat_o[i+12] <= w_last[i]; if (wstrb[i+12]) w_last[i] <= wbs_dat_i[i+12];
                 end
               end
               for (i = 0; i < 11; i = i + 1) begin
@@ -599,52 +597,40 @@ module string_led_registers #(
               end
             end
           endcase
-          
-          cs_n      <= 1'b1;
-          mstate    <= 2'b00;
-          ready     <= 1'b1;
-        
+
+          cs_n <= 1'b1;
+
         end else begin // Memory access
-        
-          // Memory state
-          mstate <= mstate + 1'b1;
-          
+
           // Memory control
-          if (mstate == 2'b00) begin
-            cs_n            <= 1'b0;
-            we_n            <= ~wbs_we_i;
-            addr[ASIZE-1:0] <= wbs_adr_i[ASIZE+1:2];
-            if (wbs_we_i && wbs_sel_i[0]) wdata[7:0] <= wbs_dat_i[7:0];
+          if (wbs_we_i == 1'b1) begin
+            cs_n <= 1'b0;
           end else begin
-            cs_n      <= 1'b1;
+            cs_n <= 1'b1;
           end
-          
-          // Memory ready
-          if (mstate == 2'b11) begin
-            ready     <= 1'b1;
-          end else begin
-            ready     <= 1'b0;
-          end
+		  
+		  addr[ASIZE-1:0] <= wbs_adr_i[ASIZE+1:2];
+          wdata[7:0]      <= wbs_dat_i[7:0];
 
         end
+		ready     <= 1'b1;
       end else begin
         cs_n      <= 1'b1;
-        mstate    <= 2'b00;
         ready     <= 1'b0;
       end
-      
+
       if (valid && !ready && (wbs_addr == ctrl_reg_addr) && wstrb[31]) begin
         start <= wbs_dat_i[31];
       end else begin
         start <= 1'b0;
       end
-      
+
       if ((irq_en == 1'b1) && (last_progress == 1'b1) && (progress == 1'b0)) begin
         irq <= 1'b1;
       end else begin
         irq <= 1'b0;
       end
-      
+
       last_progress <= progress;
 
     end

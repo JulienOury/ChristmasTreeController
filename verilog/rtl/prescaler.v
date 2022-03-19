@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////
-// SPDX-FileCopyrightText: 2022 , Julien OURY                       
-// 
+// SPDX-FileCopyrightText: 2022 , Julien OURY
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -31,28 +31,37 @@ module prescaler #(
 
 );
 
-  wire [BITS-1:0] next_counter;
-  reg  [BITS-1:0] counter;
-
-  assign next_counter = counter + multiplier;
+  reg [BITS-1:0] div;
+  reg [BITS-1:0] mul;
+  reg [BITS-1:0] div_m_mul;
+  reg [BITS-1:0] mul_m_div;
+  reg [BITS-1:0] counter;
 
   always @(negedge rst_n or posedge clk) begin
     if (rst_n == 1'b0) begin
-      counter <= 1'b0;
+	  mul       <= {(BITS){1'b0}};
+      div       <= {(BITS){1'b0}};
+	  div_m_mul <= {(BITS){1'b0}};
+      mul_m_div <= {(BITS){1'b0}};
+      counter   <= {(BITS){1'b0}};
       tick    <= 1'b0;
     end else begin
       if (clear_n == 1'b0) begin
-        counter <= 1'b0;
-        tick    <= 1'b0;
+        counter   <= {(BITS){1'b0}};
+        tick      <= 1'b0;
       end else begin
-        if (next_counter > divider) begin
-          counter <= next_counter - divider;
+        if (counter > div_m_mul) begin
+          counter <= counter + mul_m_div;
           tick    <= 1'b1;
         end else begin
-          counter <= next_counter;
+          counter <= counter + mul;
           tick    <= 1'b0;
         end
       end
+	  mul       <= multiplier;
+      div       <= divider   ;
+	  div_m_mul <= div - mul ;
+      mul_m_div <= mul - div ;
     end
   end
 

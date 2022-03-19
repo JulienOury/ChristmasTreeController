@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////
-// SPDX-FileCopyrightText: 2022 , Julien OURY                       
-// 
+// SPDX-FileCopyrightText: 2022 , Julien OURY
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -324,12 +324,12 @@ module event_catcher #(
         event_delay   <= {DBITS{1'b0}};
         event_timeout <= 1'b0;
     end else begin
-    
+
         if (i_valid == 1'b1) begin
-      
+
           //event detect
           last_value <= i_value;
-      
+
           //counter update
           if (detect_event == 1'b1) begin
             cnt <= reload_offset;
@@ -337,7 +337,7 @@ module event_catcher #(
             cnt <= next_cnt;
           end
         end
-      
+
         //report event
         if ((i_valid == 1'b1) && (detect_event == 1'b1)) begin
           event_new     <= 1'b1;
@@ -347,7 +347,7 @@ module event_catcher #(
         end else begin
           event_new     <= 1'b0;
         end
-    
+
     end
 
     end
@@ -472,13 +472,13 @@ module frame_decoder #(
             default:
               frame_state_reg <= idle_state;
             endcase
-      
+
           if ((frame_state_reg == idle_state) && (event_timeout == 1'b1)) begin
             initial_timeout <= 1'b1;
           end else if ((frame_state_reg == stop_state) && is_valid_stop && is_valid_addr && is_valid_data && (frame_repeat == 0)) begin
             initial_timeout <= 1'b0;
           end
-      
+
           if ((frame_state_reg == start_state) && is_valid_start_b) begin
             frame_shift <= 32'h80000000;
           end else if (frame_state_reg == data_latch_state) begin
@@ -488,7 +488,7 @@ module frame_decoder #(
               frame_shift <= {1'b1, frame_shift[31:1]};
             end
           end
-      
+
           if (frame_state_reg == start_state) begin
             if (repeat_en && is_valid_repeat) begin
               frame_repeat <= 1'b1;
@@ -496,9 +496,9 @@ module frame_decoder #(
               frame_repeat <= 1'b0;
             end
           end
-      
+
         end
-      
+
         if ((receiver_en == 1'b1) && (event_new == 1'b1) && (frame_state_reg == stop_state) && is_valid_stop && is_valid_addr && is_valid_data) begin
           frame_write <= 1'b1;
           frame_addr  <= frame_shift[7:0];
@@ -628,7 +628,7 @@ module nec_ir_receiver_registers #(
             end
           end
           status_reg_addr : begin
-            
+
             if (frame_available == 1'b1) begin
               wbs_dat_o[31]    <= 1'b1;
               wbs_dat_o[30]    <= frame_repeat;

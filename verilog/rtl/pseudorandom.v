@@ -70,26 +70,37 @@ module xoroshiro_64_plus_plus (
 );
   reg  [31:0] s0;
   reg  [31:0] s1;
-  wire [31:0] n0;
-  wire [31:0] n1;
+  reg  [31:0] n0;
+  reg  [31:0] n1;
+  reg  [31:0] n1_plus_n0;
   wire [31:0] s1_xor_s0;
-  wire [31:0] n1_plus_n0;
 
   assign s1_xor_s0 = (s1 ^ s0);
-  assign n1_plus_n0 = (n0 + n1);
-  assign n0 = (({s0[5:0],s0[31:6]} ^ s1_xor_s0) ^ (s1_xor_s0 <<< 9));
-  assign n1 = {s1_xor_s0[18:0],s1_xor_s0[31:19]};
+
   assign random = ({n1_plus_n0[14:0],n1_plus_n0[31 : 15]} + n0);
   
   always @(negedge rst_n or posedge clk) begin
     if (rst_n == 1'b0) begin
-      s0 <= (32'h00000001);
-      s1 <= (32'h00000000);
+      s0         <= (32'h00000001);
+      s1         <= (32'h00000000);
+      n0         <= (32'h00000000);
+      n1         <= (32'h00000000);
+	  n1_plus_n0 <= (32'h00000000);
     end else begin
+	
+	  // stage 1
       if (next == 1'b1) begin
         s0 <= n0;
         s1 <= n1;
       end
+
+	  // stage 2
+      n0 <= (({s0[5:0],s0[31:6]} ^ s1_xor_s0) ^ (s1_xor_s0 <<< 9));
+      n1 <= {s1_xor_s0[18:0],s1_xor_s0[31:19]};
+	  
+	  // stage 3
+	  n1_plus_n0 <= (n0 + n1);
+	  
     end
   end
 

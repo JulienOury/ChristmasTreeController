@@ -136,6 +136,14 @@ jobs:
         run: |
           make verify-nec_ir_receiver-rtl 
 
+      - name: Run DV RTL test -> step_motor_controller
+        run: |
+          make verify-step_motor_controller-rtl 
+
+      - name: Run DV RTL test -> string_led_controller_tb
+        run: |
+          make verify-string_led_controller_tb-rtl 
+
       - name: Run DV GL test -> pseudorandom
         run: |
           make verify-pseudorandom-gl 
@@ -143,4 +151,12 @@ jobs:
       - name: Run DV GL test -> nec_ir_receiver
         run: |
           make verify-nec_ir_receiver-gl 
+
+      - name: Run DV GL test -> step_motor_controller
+        run: |
+          make verify-step_motor_controller-gl 
+
+      - name: Run DV GL test -> string_led_controller_tb
+        run: |
+          make verify-string_led_controller_tb-gl 
 

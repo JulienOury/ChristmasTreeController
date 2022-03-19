@@ -174,7 +174,7 @@ module user_proj_example(
   nec_ir_receiver #(
     .NB_STAGES (10),
     .PSIZE     (20),
-    .DSIZE     (12),
+    .DSIZE     (11),
     .ASIZE     ( 4)
   ) i_nec_ir_receiver (
     .rst_n    (rst_n       ),

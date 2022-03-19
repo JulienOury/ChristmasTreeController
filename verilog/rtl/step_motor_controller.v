@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////
-// SPDX-FileCopyrightText: 2022 , Julien OURY                       
-// 
+// SPDX-FileCopyrightText: 2022 , Julien OURY
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -67,7 +67,7 @@ module step_motor_controller #(
     .divider    (divider       ),
     .tick       (tick          )
   );
-  
+
   pwm_generator i_pwm_generator (
     .rst_n      (rst_n         ),
     .clk        (clk           ),
@@ -77,7 +77,7 @@ module step_motor_controller #(
     .start      (start         ),
     .pwm        (pwm           )
   );
-  
+
   motor_sequencer #(
     .DSIZE(DSIZE)
   )i_motor_sequencer (
@@ -97,7 +97,7 @@ module step_motor_controller #(
     .motor_b1   (motor_b1      ),
     .motor_b2   (motor_b2      )
   );
-  
+
   step_motor_controller_registers #(
     .PSIZE(PSIZE),
     .DSIZE(DSIZE)
@@ -204,10 +204,10 @@ module motor_sequencer #(
   reg  [2:0]       motor_state;
   reg  [DSIZE-1:0] counter;
   reg              pwmo;
-  
+
   wire [DSIZE-1:0] next_counter;
   wire [3:0]       motor_values[7:0];
-  
+
   assign next_counter = counter + 1'b1;
   assign motor_values[0] = 4'b1_0_0_1; // b2 b1 a2 a1
   assign motor_values[1] = 4'b0_0_0_1; // b2 b1 a2 a1
@@ -242,7 +242,7 @@ module motor_sequencer #(
         motor_b1    <= 1'b0;
         motor_b2    <= 1'b0;
       end else begin
-      
+
         if (run == 1'b0) begin
           counter <= {(DSIZE){1'b0}};
         end else if (start == 1'b1) begin
@@ -257,13 +257,13 @@ module motor_sequencer #(
             end
           end
         end
-        
+
         if ((run == 1'b1) && (start == 1'b1) && (counter >= period)) begin
           step_strobe <= 1'b1;
         end else begin
           step_strobe <= 1'b0;
         end
-        
+
         pwmo <= pwm;
 
         if (ptype == 1'b0) begin // Unipolar
@@ -333,7 +333,7 @@ module step_motor_controller_registers #(
 
   reg         free;
   reg         ready;
-  reg  [23:0] cycles;
+  reg  [15:0] cycles;
 
   integer i = 0;
 
@@ -341,7 +341,7 @@ module step_motor_controller_registers #(
   assign wstrb     = {{8{wbs_sel_i[3]}}, {8{wbs_sel_i[2]}}, {8{wbs_sel_i[1]}}, {8{wbs_sel_i[0]}}} & {32{wbs_we_i}};
   assign addr      = wbs_adr_i[4:2];
   assign wbs_ack_o = ready;
-  
+
   assign next_cycles = cycles - 1'b1;
 
   always @(negedge rst_n or posedge clk) begin
@@ -358,7 +358,7 @@ module step_motor_controller_registers #(
       run           <= 1'b0;
       direction     <= 1'b0;
       free          <= 1'b0;
-      cycles        <= 24'h000000;
+      cycles        <= 16'h0000;
     end else begin
 
       if (valid && !ready) begin
@@ -410,8 +410,8 @@ module step_motor_controller_registers #(
             wbs_dat_o[31]    <= run;
             wbs_dat_o[30]    <= direction    ; if (wstrb[30]) direction     <= wbs_dat_i[30];
             wbs_dat_o[29]    <= free         ; if (wstrb[29]) free          <= wbs_dat_i[29];
-            wbs_dat_o[28:22] <= 7'b0;
-            wbs_dat_o[23:0]  <= cycles;
+            wbs_dat_o[28:16] <= 13'b0000000000000;
+            wbs_dat_o[15:0]  <= cycles;
           end
         endcase
 
@@ -419,19 +419,17 @@ module step_motor_controller_registers #(
       end else begin
         ready <= 1'b0;
       end
-      
+
       if (valid && !ready && (addr == step_reg_addr) && wstrb[31]) begin
         run <= wbs_dat_i[31];
-      end else if ((free == 1'b0) && (step_strobe == 1'b1) && (cycles == 24'h000000)) begin
+      end else if ((free == 1'b0) && (step_strobe == 1'b1) && (cycles == 16'h0000)) begin
         run <= 1'b0;
       end
-      
-      for (i = 0; i < 24; i = i + 1) begin
-        if (valid && !ready && (addr == step_reg_addr) && wstrb[i] && wbs_dat_i[i]) begin
-          cycles[i] <= wbs_dat_i[i];
-        end else if ((run == 1'b1) && (step_strobe == 1'b1) && (cycles != 24'h000000)) begin
-          cycles[i] <= next_cycles[i];
-        end
+
+      if (valid && !ready && (addr == step_reg_addr) && wbs_we_i) begin
+        cycles <= wbs_dat_i[15:0];
+      end else if ((step_strobe == 1'b1) && (cycles != 16'h0000)) begin
+        cycles <= next_cycles;
       end
 
     end
