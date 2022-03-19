@@ -8,3 +8,9 @@ A Christmas tree controller that include  :
  - Led string controller (compatibles WS2812B)
  - Pseudo-rendom generator (32bits)
 
+Below is a representation of the architecture:
+![multi macro](pictures/soc_architecture.png)
+
+Below is a representation of the ASIC layout:
+![multi macro](pictures/layout.png)
+
