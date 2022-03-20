@@ -2,12 +2,13 @@
 
 # Christmas tree controller (ASIC)
 
-This project implements a Christmas tree controller that include four dedicated modules :
+This design implements a Christmas tree controller that include four dedicated modules :
  - Infrared receiver (protocol NEC)
  - StepMotor controller (full-step, half-step, with strenght control)
  - Led string controller (compatibles WS2812B)
  - Pseudo-random generator (32bits)
 
+The purpose of this System On Chip (SoC) is to control a Christmas tree. This controller allows, thanks to an infrared remote control, to control an garland of RGB LEDs as well as its rotating star at its top.
 
 ### Architecture
 
