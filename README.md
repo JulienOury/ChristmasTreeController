@@ -79,7 +79,7 @@ echo \
 sudo apt-get update --assume-yes
 sudo apt-get install docker-ce docker-ce-cli containerd.io --assume-yes
 ```
-## Build the project
+## Set environnement variables (must be achieved before : Install the project, Run RTL/GL simulations, ZIP/UNZIP ASIC database files, clean)
 ```
 project_name=EfablessMpw5
 design_name=ChristmasTreeController
@@ -91,7 +91,15 @@ export OPENLANE_ROOT=$project_folder/openlane
 export PDK_ROOT=$OPENLANE_ROOT/pdks
 export CARAVEL_ROOT=$design_folder/caravel
 export PRECHECK_ROOT=$project_folder/precheck
-
+```
+## Install the project
+```
+mkdir -p $project_folder
+cd $project_folder
+git clone https://github.com/JulienOury/ChristmasTreeController.git $design_name
+```
+## Install the project
+```
 cd $design_folder
 make install
 make install_mcw
@@ -99,10 +107,10 @@ git clone https://github.com/efabless/caravel_pico.git
 
 make user_proj_example
 make user_project_wrapper
-
 ```
-## Make RTL simulations
+## Run RTL simulations
 ```
+cd $design_folder
 make simenv
 make simlink
 
@@ -111,8 +119,9 @@ export SIM=RTL
 make verify-all-rtl
 ```
 
-## Make GL simulation
+## Run GL simulation
 ```
+cd $design_folder
 make simenv
 make simlink
 
@@ -122,14 +131,17 @@ make verify-all-gl
 ```
 ## ZIP ASIC database files
 ```
+cd $design_folder
 make zip
 ```
 ## UNZIP ASIC database files
 ```
+cd $design_folder
 make unzip
 ```
 ## Clean
 ```
+cd $design_folder
 make clean
 make clean-user_project_wrapper
 make clean-user_proj_example
