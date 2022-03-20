@@ -140,9 +140,9 @@ jobs:
         run: |
           make verify-step_motor_controller-rtl 
 
-      - name: Run DV RTL test -> string_led_controller_tb
+      - name: Run DV RTL test -> string_led_controller
         run: |
-          make verify-string_led_controller_tb-rtl 
+          make verify-string_led_controller-rtl 
 
       - name: Run DV GL test -> pseudorandom
         run: |
@@ -156,7 +156,7 @@ jobs:
         run: |
           make verify-step_motor_controller-gl 
 
-      - name: Run DV GL test -> string_led_controller_tb
+      - name: Run DV GL test -> string_led_controller
         run: |
-          make verify-string_led_controller_tb-gl 
+          make verify-string_led_controller-gl 
 
