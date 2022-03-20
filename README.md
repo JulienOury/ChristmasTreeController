@@ -11,7 +11,7 @@ This project implements a Christmas tree controller that include four dedicated 
 
 ### Architecture
 
-This design is based on following [Caravel user project](https://github.com/efabless/caravel_user_project.git) template.
+This design is based on [Caravel user project](https://github.com/efabless/caravel_user_project.git) template.
 
 Below is a representation of the architecture:
 
