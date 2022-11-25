@@ -1,21 +1,45 @@
 {
-    "PDK"                      : "sky130A",
-    "STD_CELL_LIBRARY"         : "sky130_fd_sc_hd",
-    "CARAVEL_ROOT"             : "../../caravel",
-    "CLOCK_NET"                : "wb_clk_i",
-    "CLOCK_PERIOD"             : "10",
-    "CLOCK_PORT"               : "wb_clk_i",
-    "DESIGN_IS_CORE"           : "0",
-    "DESIGN_NAME"              : "user_proj_example",
-    "DIE_AREA"                 : "0 0 1000 1000",
-    "DIODE_INSERTION_STRATEGY" : "4",
-    "FP_PIN_ORDER_CFG"         : "pin_order.cfg",
-    "FP_SIZING"                : "absolute",
-    "GLB_RT_MAXLAYER"          : "5",
-    "GND_NETS"                 : "vssd1",
-    "PL_BASIC_PLACEMENT"       : "1",
-    "PL_TARGET_DENSITY"        : "0.30",
-    "RUN_CVC"                  : "1",
-    "VDD_NETS"                 : "vccd1",
-    "VERILOG_FILES"            : ["../../caravel/verilog/rtl/defines.v", "../../verilog/rtl/user_proj_example.v", "../../verilog/rtl/wishbone_1mst_to_4slv.v", "../../verilog/rtl/prescaler.v", "../../verilog/rtl/simple_fifo.v", "../../verilog/rtl/nec_ir_receiver.v", "../../verilog/rtl/pseudorandom.v", "../../verilog/rtl/step_motor_controller.v", "../../verilog/rtl/string_led_controller.v", "../../verilog/rtl/generic_sram_1rw1r.v", "../../verilog/rtl/inferred_sram_1rw1r.v"]
+    "DESIGN_NAME": "user_proj_example",
+    "DESIGN_IS_CORE": 0,
+    "VERILOG_FILES": ["dir::../../verilog/rtl/defines.v", "dir::../../verilog/rtl/user_proj_example.v", "dir::../../verilog/rtl/wishbone_1mst_to_4slv.v", "dir::../../verilog/rtl/prescaler.v", "dir::../../verilog/rtl/simple_fifo.v", "dir::../../verilog/rtl/nec_ir_receiver.v", "dir::../../verilog/rtl/pseudorandom.v", "dir::../../verilog/rtl/step_motor_controller.v", "dir::../../verilog/rtl/string_led_controller.v", "dir::../../verilog/rtl/generic_sram_1rw1r.v", "dir::../../verilog/rtl/inferred_sram_1rw1r.v"],
+    "CLOCK_PERIOD": 10,
+    "CLOCK_PORT": "wb_clk_i",
+    "CLOCK_NET": "counter.clk",
+    "FP_SIZING": "absolute",
+    "DIE_AREA": "0 0 1000 1000",
+    "FP_PIN_ORDER_CFG": "dir::pin_order.cfg",
+    "PL_BASIC_PLACEMENT": 0,
+    "PL_TARGET_DENSITY": 0.55,
+    "VDD_NETS": ["vccd1"],
+    "GND_NETS": ["vssd1"],
+    "DIODE_INSERTION_STRATEGY": 4,
+    "RUN_CVC": 1,
+    "pdk::sky130*": {
+        "FP_CORE_UTIL": 45,
+        "RT_MAX_LAYER": "met4",
+        "scl::sky130_fd_sc_hd": {
+            "CLOCK_PERIOD": 10
+        },
+        "scl::sky130_fd_sc_hdll": {
+            "CLOCK_PERIOD": 10
+        },
+        "scl::sky130_fd_sc_hs": {
+            "CLOCK_PERIOD": 8
+        },
+        "scl::sky130_fd_sc_ls": {
+            "CLOCK_PERIOD": 10,
+            "SYNTH_MAX_FANOUT": 5
+        },
+        "scl::sky130_fd_sc_ms": {
+            "CLOCK_PERIOD": 10
+        }
+    },
+    "pdk::gf180mcuC": {
+        "STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
+        "CLOCK_PERIOD": 24.0,
+        "FP_CORE_UTIL": 40,
+        "RT_MAX_LAYER": "Metal4",
+        "SYNTH_MAX_FANOUT": 4,
+        "PL_TARGET_DENSITY": 0.45
+    }
 }
