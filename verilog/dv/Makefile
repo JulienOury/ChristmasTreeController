@@ -19,10 +19,15 @@
 .SUFFIXES:
 .SILENT: clean all
 
+define print-debug =
+@echo "------->> MAKEFILE " $(abspath $(lastword $(MAKEFILE_LIST))) " -->> target " $@
+endef
+
 
 PATTERNS = pseudorandom nec_ir_receiver string_led_controller step_motor_controller
 
 all:  ${PATTERNS}
+	$(print-debug)
 
 	for i in ${PATTERNS}; do \
 		( cd $$i && make -f Makefile $${i}.vcd &> verify.log && grep Monitor verify.log) ; \
@@ -33,8 +38,9 @@ $(DV_PATTERNS): verify-% :
 	cd $* && make
 
 clean:  ${PATTERNS}
+	$(print-debug)
 	for i in ${PATTERNS}; do \
-		( cd $$i && \rm  -f *.elf *.hex *.bin *.vvp *.log *.vcd* *.lst *.hexe ) ; \
+		( cd $$i && \rm  -f *.elf *.hex *.bin *.vvp *.log *.vcd *.lst *.hexe ) ; \
 	done
 	rm -rf *.log
 	
