@@ -1,7 +1,7 @@
 {
     "DESIGN_NAME": "user_proj_example",
     "DESIGN_IS_CORE": 0,
-    "VERILOG_FILES": ["dir::../../verilog/rtl/defines.v", "dir::../../verilog/rtl/user_proj_example.v", "dir::../../verilog/rtl/wishbone_1mst_to_4slv.v", "dir::../../verilog/rtl/prescaler.v", "dir::../../verilog/rtl/simple_fifo.v", "dir::../../verilog/rtl/nec_ir_receiver.v", "dir::../../verilog/rtl/pseudorandom.v", "dir::../../verilog/rtl/step_motor_controller.v", "dir::../../verilog/rtl/string_led_controller.v", "dir::../../verilog/rtl/generic_sram_1rw1r.v", "dir::../../verilog/rtl/inferred_sram_1rw1r.v"],
+    "VERILOG_FILES": ["dir::../../caravel/verilog/rtl/defines.v", "dir::../../verilog/rtl/user_proj_example.v", "dir::../../verilog/rtl/wishbone_1mst_to_4slv.v", "dir::../../verilog/rtl/prescaler.v", "dir::../../verilog/rtl/simple_fifo.v", "dir::../../verilog/rtl/nec_ir_receiver.v", "dir::../../verilog/rtl/pseudorandom.v", "dir::../../verilog/rtl/step_motor_controller.v", "dir::../../verilog/rtl/string_led_controller.v", "dir::../../verilog/rtl/generic_sram_1rw1r.v", "dir::../../verilog/rtl/inferred_sram_1rw1r.v"],
     "CLOCK_PERIOD": 10,
     "CLOCK_PORT": "wb_clk_i",
     "CLOCK_NET": "counter.clk",
