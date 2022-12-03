@@ -74,8 +74,8 @@ ifeq ($(PDK),gf180mcuC)
 	CARAVEL_TAG := $(MPW_TAG)
 	#OPENLANE_TAG=ddfeab57e3e8769ea3d40dda12be0460e09bb6d9
 	#export OPEN_PDKS_COMMIT?=0059588eebfc704681dc2368bd1d33d96281d10f
-	export OPEN_PDKS_COMMIT?=141eea4d1bb8c6d4dd85fcbf2c0bdface7df9cfc
-	export OPENLANE_TAG?=2022.12.02
+	export OPEN_PDKS_COMMIT?=35c7265f51749ad8d9fdbb575af22c7c8fab974e
+	export OPENLANE_TAG?=2022.11.29
 
 endif
 
