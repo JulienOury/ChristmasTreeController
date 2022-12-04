@@ -15,6 +15,10 @@
 
 # THE FOLLOWING SECTIONS CAN BE CHANGED IF NEEDED
 
+# PDN Horizontal Pitch as mutliples of 30. Horizontal Pitch = 60 + FP_PDN_HPITCH_MULT * 30. 
+# FP_PDN_HPITCH_MULT is an integer. Minimum value is 0.
+set ::env(FP_PDN_HPITCH_MULT) 1
+
 # PDN Pitch
 set ::env(FP_PDN_VPITCH) 180
 set ::env(FP_PDN_HPITCH) $::env(FP_PDN_VPITCH)

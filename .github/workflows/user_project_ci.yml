@@ -131,21 +131,21 @@ jobs:
             /home/runner/work/caravel_user_project/caravel_user_project/mpw_precheck_result/logs/*
 
 
-      - name: Run DV RTL test -> pseudorandom
-        run: |
-          make verify-pseudorandom-rtl 
-
-      - name: Run DV RTL test -> nec_ir_receiver
-        run: |
-          make verify-nec_ir_receiver-rtl 
-
-      - name: Run DV RTL test -> step_motor_controller
-        run: |
-          make verify-step_motor_controller-rtl 
-
-      - name: Run DV RTL test -> string_led_controller
-        run: |
-          make verify-string_led_controller-rtl 
+#      - name: Run DV RTL test -> pseudorandom
+#        run: |
+#          make verify-pseudorandom-rtl 
+#
+#      - name: Run DV RTL test -> nec_ir_receiver
+#        run: |
+#          make verify-nec_ir_receiver-rtl 
+#
+#      - name: Run DV RTL test -> step_motor_controller
+#        run: |
+#          make verify-step_motor_controller-rtl 
+#
+#      - name: Run DV RTL test -> string_led_controller
+#        run: |
+#          make verify-string_led_controller-rtl 
 
       - name: Run DV GL test -> pseudorandom
         run: |

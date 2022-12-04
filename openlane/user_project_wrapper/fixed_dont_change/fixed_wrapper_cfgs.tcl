@@ -54,6 +54,6 @@ set ::env(FP_PDN_HWIDTH) 3.1
 set ::env(FP_PDN_VSPACING) [expr 5*$::env(FP_PDN_CORE_RING_VWIDTH)]
 set ::env(FP_PDN_HSPACING) 26.9
 
-set ::env(VDD_NETS) [list {vdd}]
-set ::env(GND_NETS) [list {vss}]
+#set ::env(VDD_NETS) [list {vdd}]
+#set ::env(GND_NETS) [list {vss}]
 set ::env(SYNTH_USE_PG_PINS_DEFINES) "USE_POWER_PINS"
