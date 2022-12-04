@@ -20,9 +20,9 @@
 set ::env(FP_PDN_HPITCH_MULT) 1
 
 # PDN Pitch
-set ::env(FP_PDN_VPITCH) 180
-set ::env(FP_PDN_HPITCH) $::env(FP_PDN_VPITCH)
+set ::env(FP_PDN_VPITCH) 90
+#set ::env(FP_PDN_HPITCH) $::env(FP_PDN_VPITCH)
 
 # PDN Offset 
 set ::env(FP_PDN_VOFFSET) 5
-set ::env(FP_PDN_HOFFSET) $::env(FP_PDN_VOFFSET)
+#set ::env(FP_PDN_HOFFSET) $::env(FP_PDN_VOFFSET)
