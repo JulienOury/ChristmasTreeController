@@ -106,9 +106,12 @@ install:
 simenv:
 	$(print-debug)
 	docker pull efabless/dv:latest
+  
+patch_mcw:
+	cp -rf ./mgmt_core_wrapper_patch/* ./mgmt_core_wrapper
 
 .PHONY: setup
-setup: install check-env install_mcw openlane pdk-with-volare setup-timing-scripts
+setup: install check-env install_mcw patch_mcw openlane pdk-with-volare setup-timing-scripts
 	$(print-debug)
 
 # Openlane
@@ -219,10 +222,10 @@ simlink: check-caravel
 	$(eval PIN_CFG_PATH  := $(shell realpath --relative-to=openlane/user_project_wrapper $(CARAVEL_ROOT)/openlane/user_project_wrapper_empty/pin_order.cfg))
 	mkdir -p openlane
 	mkdir -p openlane/user_project_wrapper
-	cd openlane &&\
-	ln -sf $(MAKEFILE_PATH) Makefile
-	cd openlane/user_project_wrapper &&\
-	ln -sf $(PIN_CFG_PATH) pin_order.cfg
+#	cd openlane &&\
+#	ln -sf $(MAKEFILE_PATH) Makefile
+#	cd openlane/user_project_wrapper &&\
+#	ln -sf $(PIN_CFG_PATH) pin_order.cfg
 
 # Update Caravel
 .PHONY: update_caravel
