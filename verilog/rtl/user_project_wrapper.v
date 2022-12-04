@@ -50,9 +50,9 @@ module user_project_wrapper #(
     output [31:0] wbs_dat_o,
 
     // Logic Analyzer Signals
-    input  [127:0] la_data_in,
-    output [127:0] la_data_out,
-    input  [127:0] la_oenb,
+    input  [`MPRJ_LA_PADS-1:0] la_data_in,
+    output [`MPRJ_LA_PADS-1:0] la_data_out,
+    input  [`MPRJ_LA_PADS-1:0] la_oenb,
 
     // IOs
     input  [`MPRJ_IO_PADS-1:0] io_in,

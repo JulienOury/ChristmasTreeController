@@ -51,19 +51,25 @@ sudo apt-get install libcairo2-dev --assume-yes
 sudo apt-get install mesa-common-dev libglu1-mesa-dev --assume-yes
 sudo apt-get install libncurses-dev --assume-yes
 sudo apt-get install git --assume-yes
+
+# install magic
 git clone https://github.com/RTimothyEdwards/magic.git
 cd magic
 ./configure 
 sudo make
 sudo make install
+ 
+# install YOSYS
 sudo apt-get install build-essential clang bison flex \
 	libreadline-dev gawk tcl-dev libffi-dev git \
-	graphviz xdot pkg-config python3 libboost-system-dev \
+	graphviz xdot pkg-config python3 python3-pip python3.8-venv libboost-system-dev \
 	libboost-python-dev libboost-filesystem-dev zlib1g-dev --assume-yes
 git clone https://github.com/YosysHQ/yosys.git
 cd yosys
 sudo make
 sudo make install
+
+# install DOCKER
 sudo apt-get remove docker docker-engine docker.io containerd runc --assume-yes
 sudo apt-get update --assume-yes
 sudo apt-get install \
@@ -78,32 +84,46 @@ echo \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update --assume-yes
 sudo apt-get install docker-ce docker-ce-cli containerd.io --assume-yes
+
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
 ```
-## Set environnement variables (must be achieved before : Install the project, Run RTL/GL simulations, ZIP/UNZIP ASIC database files, clean)
+## Set environnement variables (must be achieved before : Install the project, Compile the project, Run RTL/GL simulations, ZIP/UNZIP ASIC database files, clean)
 ```
-project_name=EfablessMpw5
+HOMEDIR=/home/<your-name>
+BASEDIR=<target-folder-path>
+project_name=EfablessGFMPW0
 design_name=ChristmasTreeController
 
 project_folder=$BASEDIR/$project_name
 design_folder=$project_folder/$design_name
 
-export OPENLANE_ROOT=$project_folder/openlane
-export PDK_ROOT=$OPENLANE_ROOT/pdks
+export OPENLANE_ROOT=$project_folder/dependencies/openlane_src
+export PDK_ROOT=$project_folder/dependencies/pdks
 export CARAVEL_ROOT=$design_folder/caravel
 export PRECHECK_ROOT=$project_folder/precheck
+
+export PDK=gf180mcuC
+
+export PATH="$HOMEDIR.local/bin:$PATH"
+
+sudo service docker start
 ```
 ## Install the project
 ```
+rm -rf $project_folder
 mkdir -p $project_folder
 cd $project_folder
+
 git clone https://github.com/JulienOury/ChristmasTreeController.git $design_name
+
+cd $design_folder
+make setup
 ```
-## Install the project
+## Compile the project
 ```
 cd $design_folder
-make install
-make install_mcw
-git clone https://github.com/efabless/caravel_pico.git
 
 make user_proj_example
 make user_project_wrapper
@@ -111,8 +131,6 @@ make user_project_wrapper
 ## Run RTL simulations
 ```
 cd $design_folder
-make simenv
-make simlink
 
 export SIM=RTL
 

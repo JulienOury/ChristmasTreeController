@@ -27,6 +27,8 @@
 `define MPRJ_PWR_PADS_2 2	/* vdda2, vccd2 enable/disable control */
 `define MPRJ_PWR_PADS (`MPRJ_PWR_PADS_1 + `MPRJ_PWR_PADS_2)
 
+`define MPRJ_LA_PADS 64 /* number of LA probes */
+
 // Analog pads are only used by the "caravan" module and associated
 // modules such as user_analog_project_wrapper and chip_io_alt.
 
