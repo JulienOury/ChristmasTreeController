@@ -16,39 +16,34 @@
 set ::env(PDK) "sky130A"
 #set ::env(STD_CELL_LIBRARY) "gf180mcu_fd_sc_mcu7t5v0"
 
-set ::env(DESIGN_NAME) user_proj_example
+set ::env(DESIGN_NAME) step_motor_controller
 
 set ::env(VERILOG_FILES) "\
 	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
 	$::env(DESIGN_DIR)/../../verilog/rtl/defines.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/user_proj_example.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/wishbone_1mst_to_4slv.v \
 	$::env(DESIGN_DIR)/../../verilog/rtl/prescaler.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/simple_fifo.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/nec_ir_receiver.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/pseudorandom.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/step_motor_controller.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/string_led_controller.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/generic_sram_1rw1r.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/inferred_sram_1rw1r.v"
+	$::env(DESIGN_DIR)/../../verilog/rtl/step_motor_controller.v "
 
 set ::env(DESIGN_IS_CORE) 0
 
-set ::env(CLOCK_PORT) "wb_clk_i"
-set ::env(CLOCK_NET) "wb_clk_i"
-set ::env(CLOCK_PERIOD) "20.0"
+set ::env(CLOCK_PORT) "clk"
+set ::env(CLOCK_NET) "clk"
+set ::env(CLOCK_PERIOD) "15.0"
 
 set ::env(FP_SIZING) absolute
-set ::env(DIE_AREA) "0 0 1000 1000"
+set ::env(DIE_AREA) "0 0 500 400"
 
 set ::env(FP_PIN_ORDER_CFG) $::env(DESIGN_DIR)/pin_order.cfg
 
 set ::env(PL_BASIC_PLACEMENT) 0
 set ::env(PL_TARGET_DENSITY) 0.45
+set ::env(PL_TIME_DRIVEN) 1
 
 set ::env(FP_CORE_UTIL) 40
 
+set ::env(SYNTH_STRATEGY) "DELAY 3"
 set ::env(SYNTH_MAX_FANOUT) 4
+set ::env(SYNTH_BUFFERING) 1
 
 # Maximum layer used for routing is metal 4.
 # This is because this macro will be inserted in a top level (user_project_wrapper) 

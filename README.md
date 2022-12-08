@@ -104,7 +104,7 @@ export PDK_ROOT=$project_folder/dependencies/pdks
 export CARAVEL_ROOT=$design_folder/caravel
 export PRECHECK_ROOT=$project_folder/precheck
 
-export PDK=gf180mcuC
+export PDK=sky130A
 
 export PATH="$HOMEDIR.local/bin:$PATH"
 

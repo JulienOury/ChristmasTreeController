@@ -24,8 +24,8 @@ SIM?=RTL
 CARAVEL_LITE?=1
 
 # PDK switch varient
-#export PDK?=sky130A
-export PDK?=gf180mcuC
+export PDK?=sky130A
+#export PDK?=gf180mcuC
 export PDKPATH?=$(PDK_ROOT)/$(PDK)
 
 
@@ -111,7 +111,7 @@ patch_mcw:
 	cp -rf ./mgmt_core_wrapper_patch/* ./mgmt_core_wrapper
 
 .PHONY: setup
-setup: install check-env install_mcw patch_mcw openlane pdk-with-volare setup-timing-scripts
+setup: install check-env install_mcw openlane pdk-with-volare setup-timing-scripts
 	$(print-debug)
 
 # Openlane

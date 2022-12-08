@@ -16,8 +16,8 @@
 # Base Configurations. Don't Touch
 # section begin
 
-set ::env(PDK) "gf180mcuC"
-set ::env(STD_CELL_LIBRARY) "gf180mcu_fd_sc_mcu7t5v0"
+set ::env(PDK) "sky130A"
+#set ::env(STD_CELL_LIBRARY) "gf180mcu_fd_sc_mcu7t5v0"
 
 # YOU CAN CHANGE ANY VARIABLES DEFINED IN THE DEFAULT WRAPPER CFGS BY OVERRIDING THEM IN THIS CONFIG.TCL
 source $::env(DESIGN_DIR)/fixed_dont_change/default_wrapper_cfgs.tcl
