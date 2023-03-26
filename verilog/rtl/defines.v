@@ -19,6 +19,6 @@
 // Global parameters
 `define __USER_DEFINE_H
 
-`define MPRJ_LA_PADS 64 /* number of LA probes */
+`define MPRJ_LA_PADS 128 /* number of LA probes */
 
 `endif // __USER_DEFINE_H
