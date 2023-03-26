@@ -106,9 +106,6 @@ install:
 simenv:
 	$(print-debug)
 	docker pull efabless/dv:latest
-  
-patch_mcw:
-	cp -rf ./mgmt_core_wrapper_patch/* ./mgmt_core_wrapper
 
 .PHONY: setup
 setup: install check-env install_mcw openlane pdk-with-volare setup-timing-scripts

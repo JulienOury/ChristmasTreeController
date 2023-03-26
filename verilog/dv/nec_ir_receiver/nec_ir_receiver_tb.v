@@ -25,7 +25,8 @@ module nec_ir_receiver_tb;
   reg clock;
   reg RSTB;
   reg CSB;
-  reg power1;
+  reg power1, power2;
+  reg power3, power4;
 
   wire gpio;
   wire [37:0] mprj_io;
@@ -113,8 +114,11 @@ module nec_ir_receiver_tb;
 
   initial begin    // Power-up sequence
     power1 <= 1'b0;
+    power2 <= 1'b0;
     #200;
     power1 <= 1'b1;
+    #200;
+    power2 <= 1'b1;
   end
 
   wire flash_csb;
@@ -122,7 +126,8 @@ module nec_ir_receiver_tb;
   wire flash_io0;
   wire flash_io1;
 
-  wire VDD = power1;
+  wire VDD3V3 = power1;
+  wire VDD1V8 = power2;
   wire VSS = 1'b0;
   
   ir_behavioral_driver ir_drv(
@@ -130,10 +135,24 @@ module nec_ir_receiver_tb;
   );
 
   caravel uut (
-  `ifdef USE_POWER_PINS
-    .vdd    (VDD),
-    .vss    (VSS),
-	`endif
+    .vddio    (VDD3V3),
+    .vddio_2  (VDD3V3),
+    .vssio    (VSS),
+    .vssio_2  (VSS),
+    .vdda    (VDD3V3),
+    .vssa    (VSS),
+    .vccd    (VDD1V8),
+    .vssd    (VSS),
+    .vdda1    (VDD3V3),
+    .vdda1_2  (VDD3V3),
+    .vdda2    (VDD3V3),
+    .vssa1    (VSS),
+    .vssa1_2  (VSS),
+    .vssa2    (VSS),
+    .vccd1    (VDD1V8),
+    .vccd2    (VDD1V8),
+    .vssd1    (VSS),
+    .vssd2    (VSS),
     .clock    (clock),
     .gpio     (gpio),
     .mprj_io  (mprj_io),

@@ -17,7 +17,7 @@
 # section begin
 
 set ::env(PDK) "sky130A"
-#set ::env(STD_CELL_LIBRARY) "gf180mcu_fd_sc_mcu7t5v0"
+set ::env(STD_CELL_LIBRARY) "sky130_fd_sc_hd"
 
 # YOU CAN CHANGE ANY VARIABLES DEFINED IN THE DEFAULT WRAPPER CFGS BY OVERRIDING THEM IN THIS CONFIG.TCL
 source $::env(DESIGN_DIR)/fixed_dont_change/default_wrapper_cfgs.tcl
@@ -37,14 +37,14 @@ set ::env(VERILOG_FILES) "\
 set ::env(CLOCK_PORT) "wb_clk_i"
 set ::env(CLOCK_NET) "wb_clk_i"
 
-set ::env(CLOCK_PERIOD) "20"
+set ::env(CLOCK_PERIOD) "10"
 
 ## Internal Macros
 ### Macro PDN Connections
-set ::env(FP_PDN_MACRO_HOOKS) "mprj VDD VSS vdd vss"
-set ::env(VDD_NETS) [list {VDD}]
-set ::env(GND_NETS) [list {VSS}]
-set ::env(SYNTH_USE_PG_PINS_DEFINES) "USE_POWER_PINS"
+set ::env(FP_PDN_MACRO_HOOKS) "mprj vccd1 vssd1"
+#set ::env(VDD_NETS) [list {VDD}]
+#set ::env(GND_NETS) [list {VSS}]
+#set ::env(SYNTH_USE_PG_PINS_DEFINES) "USE_POWER_PINS"
 
 
 ### Macro Placement
@@ -63,7 +63,8 @@ set ::env(EXTRA_LEFS) "$::env(DESIGN_DIR)/../../lef/user_proj_example.lef"
 
 set ::env(EXTRA_GDS_FILES) "$::env(DESIGN_DIR)/../../gds/user_proj_example.gds"
 
-set ::env(RT_MAX_LAYER) {Metal4}
+#set ::env(GLB_RT_MAXLAYER) 5
+set ::env(RT_MAX_LAYER) {met4}
 
 # disable pdn check nodes becuase it hangs with multiple power domains.
 # any issue with pdn connections will be flagged with LVS so it is not a critical check.
@@ -71,6 +72,7 @@ set ::env(FP_PDN_CHECK_NODES) 0
 
 # The following is because there are no std cells in the example wrapper project.
 set ::env(SYNTH_ELABORATE_ONLY) 1
+#set ::env(SYNTH_TOP_LEVEL) 1
 set ::env(PL_RANDOM_GLB_PLACEMENT) 1
 
 set ::env(PL_RESIZER_DESIGN_OPTIMIZATIONS) 0
@@ -83,6 +85,8 @@ set ::env(FP_PDN_ENABLE_RAILS) 0
 set ::env(DIODE_INSERTION_STRATEGY) 0
 set ::env(RUN_FILL_INSERTION) 0
 set ::env(RUN_TAP_DECAP_INSERTION) 0
+#set ::env(FILL_INSERTION) 0
+#set ::env(TAP_DECAP_INSERTION) 0
 set ::env(CLOCK_TREE_SYNTH) 0
 
 # YOU ARE NOT ALLOWED TO CHANGE ANY VARIABLES DEFINED IN THE FIXED WRAPPER CFGS 
