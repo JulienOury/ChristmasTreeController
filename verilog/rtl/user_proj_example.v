@@ -37,9 +37,9 @@ module user_proj_example(
     output wire [31:0]  wbs_dat_o,
 
     // Logic Analyzer Signals
-    input  wire [`MPRJ_LA_PADS-1:0] la_data_in,
-    output wire [`MPRJ_LA_PADS-1:0] la_data_out,
-    input  wire [`MPRJ_LA_PADS-1:0] la_oenb,
+    input  wire [127:0] la_data_in,
+    output wire [127:0] la_data_out,
+    input  wire [127:0] la_oenb,
 
     // IOs
     input  wire [`MPRJ_IO_PADS-1:0] io_in,
@@ -103,7 +103,7 @@ module user_proj_example(
   assign io_oeb[31: 0] = {(32){1'b1}};
   
   // LA
-  assign la_data_out = {(`MPRJ_LA_PADS){1'b0}};
+  assign la_data_out = {(128){1'b0}};
   
   assign irq[2] = 1'b0;
   
