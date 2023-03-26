@@ -20,8 +20,8 @@
 module user_proj_example(
 
 `ifdef USE_POWER_PINS
-    inout  wire vdd,
-    inout  wire vss,
+    inout  wire vccd1,  // User area 1 1.8V supply
+    inout  wire vssd1,  // User area 1 digital ground
 `endif
 
     // Wishbone Slave ports (WB MI A)
@@ -237,8 +237,8 @@ module user_proj_example(
     .PSIZE (20)
   ) i_string_led_controller (
 `ifdef USE_POWER_PINS
-	.vccd1     (vdd         ),
-	.vssd1     (vss         ),
+	.vccd1     (vccd1       ),
+	.vssd1     (vssd1       ),
 `endif
     .rst_n     (rst_n       ),
     .clk       (wb_clk_i    ),
