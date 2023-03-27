@@ -292,6 +292,13 @@ jobs:
             /home/runner/work/caravel_user_project/caravel_user_project/mpw_precheck_result/logs/*
 
 
+  RTL_simulations:
+    timeout-minutes: 720
+    runs-on: ubuntu-latest
+    needs: [user_project_flow_sky130A]
+    steps:
+      - uses: actions/checkout@v2
+
       - name: Run DV RTL test -> pseudorandom
         run: |
           make verify-pseudorandom-rtl 
@@ -307,6 +314,13 @@ jobs:
       - name: Run DV RTL test -> string_led_controller
         run: |
           make verify-string_led_controller-rtl 
+
+  GL_simulations:
+    timeout-minutes: 720
+    runs-on: ubuntu-latest
+    needs: [user_project_flow_sky130A]
+    steps:
+      - uses: actions/checkout@v2
 
       - name: Run DV GL test -> pseudorandom
         run: |
